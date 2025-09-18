@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects — Finnagin Wantland</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="site-title"><a href="Home.html">Finnagin Wantland</a></h1>
+      <nav>
+        <ul class="nav">
+          <li><a href="Home.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Projects</h2>
+    <p>
+      Below are several projects I have been building to explore algorithms, game simulations, and desktop tools. Each
+      project entry includes a short description and a link to the public GitHub repository where you can
+      read the source, try the code, and open issues or pull requests. Tech highlights across these projects include
+      Python for simulations, Qt for desktop tooling, and small utilities and scripts for data processing and testing.
+      If you'd like to run any project locally, check the repo README for prerequisites and quick start steps — or
+      reach out and I can help you get it running. Contributions, suggestions, and feedback are very welcome!
+    </p>
+    <div class="grid projects-grid">
+      <article class="card">
+        <img src="Images/PokemonPond.png" alt="Project screenshot" />
+        <div class="card-body">
+          <h4>Pokemon Pond</h4>
+          <p>a virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment.
+            This project brings the ecosystem to life by modeling the behavior and survival of organisms through a 2D
+            grid.
+            In this world, fish swim around and consume plants to sustain themselves, while plants grow with water and
+            sunlight,
+            only losing mass when they’re nibbled on by the fish.<br><i>Link to Repo:</i>
+            <a href="https://github.com/FinnWant/PokePond">https://github.com/FinnWant/PokePond</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="Images/WHAB.png" alt="Project screenshot" />
+        <div class="card-body">
+          <h4>WarHammer Table Top Army Builder</h4>
+          <p>This is a QT based web application that lets you build and create armys for the table top war game
+            Warhammer 40k.
+            Create new units or armies, see stats on units and your army as a whole, and share your army builds on the
+            forms for all to see!
+            <br><strong>WORK IN PROGRESS</strong><br><progress id="project" max="100" value="50">
+              50%</progress><br><i>Link to Repo:</i>
+            <a href="https://github.com/FinnWant/WHArmy_Builder">https://github.com/FinnWant/WHArmy_Builder</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="Images/PokemonBattle.png" alt="Project screenshot" />
+        <div class="card-body">
+          <h4>Pokemon Battle Simulator</h4>
+          <p>A simple text based Pokemon battle simulator. Choose your Pokemon or create enitrely new ones and battle
+            against a computer opponent.
+            Each Pokemon has its own unique stats and moves. This simulator includes the real damage formula used in
+            the actual games. Soon to be added: GUI, type advantages, and more!<br><i>Link to Repo:</i>
+            <a href="https://github.com/FinnWant/Pokemon-Project">https://github.com/FinnWant/Pokemon-Project</a>
+          </p>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year2"></span> Finnagin Wantland</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year2').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

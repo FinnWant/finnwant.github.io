@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Finngain Wantland — Projects & Blog</title>
+  <meta name="description" content="Personal portfolio and blog showcasing coding projects." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .about-section .about-images {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      /* stack on small screens */
+      margin-bottom: 1.5rem;
+    }
+
+    .about-section .about-images img {
+      border-radius: 15%;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      /* center handled by flex container */
+    }
+
+    @media (max-width: 700px) {
+      .about-section .about-images img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="site-title"><a href="Home.html">Finnagin Wantland</a></h1>
+      <nav>
+        <img src="Images/unlv-rebels-logo-black-and-white.png" alt="Logo Image" height="100" width="100" />
+        <style>
+          .site-header img {
+            vertical-align: middle;
+          }
+        </style>
+        <ul class="nav">
+          <li><a href="Home.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Hello, I'm <strong>Finnagin Wantland</strong></h1>
+        <p>Welcome to my personal website! I'm a student at University of Nevada - Las Vegas, and I'm passionate about
+          coding and technology. Here, you'll find my latest projects and blog posts documenting my technical journey.
+        </p>
+        <p><a class="btn" href="projects.html">View projects</a> <a class="btn ghost" href="blog.html">Read blog</a></p>
+      </div>
+      <div class="hero-image">
+        <img src="Images/HeroIMG.jpg" alt="Your profile image" />
+        <style>
+          .hero-image img {
+            border-radius: 50%;
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+          }
+        </style>
+      </div>
+    </section>
+    <section class="Recent-Projects">
+      <h2>Recent Projects</h2>
+      <div class="grid projects-grid">
+        <article class="card">
+          <img src="Images/PokemonPond.png" alt="Project screenshot" />
+          <div class="card-body">
+            <h4><a href="projects.html#project-1">Pokemon Pond</a></h4>
+            <p>a virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment.
+              This project brings the ecosystem to life by modeling the behavior and survival of organisms through a 2D
+              grid.
+              In this world, fish swim around and consume plants to sustain themselves, while plants grow with water and
+              sunlight,
+              only losing mass when they’re nibbled on by the fish.<br><i>Link to Repo:</i>
+              <a href="https://github.com/FinnWant/PokePond">https://github.com/FinnWant/PokePond</a>
+            </p>
+          </div>
+        </article>
+        <article class="card">
+          <img src="Images/WHAB.png" alt="Project screenshot" />
+          <div class="card-body">
+            <h4><a href="projects.html#project-2">WarHammer Table Top Army Builder</a></h4>
+            <p>This is a QT based web application that lets you build and create armys for the table top war game
+              Warhammer 40k.
+              Create new units or armies, see stats on units and your army as a whole, and share your army builds on the
+              forms for all to see!
+              <br><strong>WORK IN PROGRESS</strong><br><progress id="project" max="100" value="50">
+                50%</progress><br><i>Link to Repo:</i>
+              <a href="https://github.com/FinnWant/WHArmy_Builder">https://github.com/FinnWant/WHArmy_Builder</a>
+            </p>
+          </div>
+        </article>
+        <article class="card">
+          <img src="Images/PokemonBattle.png" alt="Project screenshot" />
+          <div class="card-body">
+            <h4><a href="projects.html#project-3">Pokemon Battle Simulator</a></h4>
+            <p>A simple text based Pokemon battle simulator. Choose your Pokemon or create enitrely new ones and battle
+              against a computer opponent.
+              Each Pokemon has its own unique stats and moves. This simulator includes the real damage formula used in
+              the actual games. Soon to be added: GUI, type advantages, and more!<br><i>Link to Repo:</i>
+              <a href="https://github.com/FinnWant/Pokemon-Project">https://github.com/FinnWant/Pokemon-Project</a>
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="about-section">
+      <h1 style="text-align: center">About Me</h1>
+      <div class="about-images">
+        <img src="Images/MEandDAD.png" alt="About Me Image" />
+        <img src="Images/MEandMOM.png" alt="About Me Image" />
+      </div>
+      <p>I am a senior Computer Science student at the University of Nevada - Las Vegas and an aspiring engineer. I
+        fell
+        in love with
+        coding and AI my freshman year thanks to my cousin Greg introducing me to Python. Since then I knew this was my
+        calling and have
+        enjoyed every minute of my journey so far! I had the honor to work on some cool projects like MFMVault.com and
+        volunteering at the
+        AI Engineer world fair in San Francisco. I am currently looking for internships or entry level positions in
+        software engineering
+        or AI/ML engineering. Feel free to reach out to me through the contact section below and thank you for visiting
+        my site!
+      </p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h3>Contact Me</h3>
+      <p>Drop me a line at <a href="mailto:fwantland50@gmail.com">fwantland50@gmail.com</a><br>
+        Connect with me on <a href="https://www.linkedin.com/in/finnagin-wantland-955472329/">LinkedIn</a><br>
+        Follow me on X (formerly Twitter): <a href="https://twitter.com/FinnWantland">FinnWantland</a><br>
+        Check out my <a href="https://github.com/FinnWant">Github</a>
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; <span id="year"></span> Finnagin Wantland — Built with HTML & CSS</p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+
+</html>

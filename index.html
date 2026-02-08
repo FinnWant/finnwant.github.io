@@ -42,7 +42,7 @@
     <div class="container header-inner">
       <h1 class="site-title"><a href="index.html">Finnagin Wantland</a></h1>
       <nav>
-        <img src="Images/university-of-nevada-las-vegas-logo.png" alt="Logo Image" height="100" width="100" />
+        <img src="Images/university-of-nevada-las-vegas-logo.png" alt="Logo Image" height="130" width="200" />
         <style>
           .site-header img {
             vertical-align: middle;
@@ -64,7 +64,12 @@
         <p>Welcome to my personal website! I'm a student at University of Nevada - Las Vegas, and I'm passionate about
           coding and technology. Here, you'll find my latest projects and blog posts documenting my technical journey.
         </p>
-        <p><a class="btn" href="projects.html">View projects</a> <a class="btn ghost" href="blog.html">Read blog</a></p>
+        <p><a class="btn" href="projects.html">View projects</a> <a class="btn ghost" href="blog.html">Read blog</a>
+        <div class="VisitButton">
+          Visits: <span id="visitCount">Loading…</span>
+        </div>
+
+        <button id="visitBtn">I visited!</button></p>
       </div>
       <div class="hero-image">
         <img src="Images/HeroIMG.jpg" alt="Your profile image" />
@@ -165,6 +170,44 @@
 
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+    <script>
+      const WORKSPACE = "finnaginwantlands-team-2827";
+      const COUNTER = "first-counter-2827";
+
+      const GET_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}`;
+      const UP_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}/up`;
+
+      function extractCount(json) {
+        // CounterAPI v2 format
+        return json?.data?.up_count ?? 0;
+      }
+
+      (async () => {
+        const countEl = document.getElementById("visitCount");
+        const btn = document.getElementById("visitBtn");
+
+        // Load current count
+        const getRes = await fetch(GET_URL);
+        const VISIT_KEY = "visited_v1";
+
+        if (!localStorage.getItem(VISIT_KEY)) {
+          localStorage.setItem(VISIT_KEY, "1");
+          const res = await fetch(UP_URL);
+          const json = await res.json();
+          countEl.textContent = extractCount(json);
+        }
+        const getJson = await getRes.json();
+        countEl.textContent = extractCount(getJson);
+
+        // Increment on button click
+        btn.addEventListener("click", async () => {
+          const upRes = await fetch(UP_URL);
+          const upJson = await upRes.json();
+          countEl.textContent = extractCount(upJson);
+        });
+      })().catch(console.error);
     </script>
 
 </body>

@@ -5,97 +5,127 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Projects — Finnagin Wantland</title>
+  <meta name="description"
+    content="C++ simulations, Qt desktop applications, and console games built by Finnagin Wantland." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://finnwant.github.io/projects.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://finnwant.github.io/projects.html" />
+  <meta property="og:title" content="Projects — Finnagin Wantland" />
+  <meta property="og:description"
+    content="C++ simulations, Qt desktop applications, and console games built by Finnagin Wantland." />
+  <meta property="og:image" content="https://finnwant.github.io/Images/PokemonPond.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@FinnWantland" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <h1 class="site-title"><a href="index.html">Finnagin Wantland</a></h1>
-      <nav>
-        <img src="Images/university-of-nevada-las-vegas-logo.png" alt="Logo Image" height="130" width="200" />
-        <style>
-          .site-header img {
-            vertical-align: middle;
-          }
-        </style>
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="Images/university-of-nevada-las-vegas-logo.png"
+          alt="University of Nevada, Las Vegas" />
+        <span class="brand-name">Finnagin Wantland
+          <span class="brand-tag">Computer Science, UNLV</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul class="nav">
           <li><a href="index.html">Home</a></li>
-          <li><a href="projects.html">Projects</a></li>
+          <li><a href="projects.html" aria-current="page">Projects</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <h2>Projects</h2>
+    <h1>Projects</h1>
     <p>
       Below are several projects I have been building to explore algorithms, game simulations, and desktop tools. Each
-      project entry includes a short description and a link to the public GitHub repository where you can
-      read the source, try the code, and open issues or pull requests. Tech highlights across these projects include
-      C++ game simulations, Qt for desktop apps, and small utilities and scripts for data processing and testing.
-      If you'd like to run any project locally, check the repo README for prerequisites and quick start steps — or
-      reach out and I can help you get it running. Contributions, suggestions, and feedback are very welcome!
+      entry includes a short description and a link to the public GitHub repository where you can read the source, try
+      the code, and open issues or pull requests. If you'd like to run any project locally, check the repo README for
+      prerequisites and quick start steps — or reach out and I can help you get it running. Contributions,
+      suggestions, and feedback are very welcome!
     </p>
+
     <div class="grid projects-grid">
-      <article class="card">
-        <img src="Images/PokemonPond.png" alt="Project screenshot" />
+      <article id="project-1" class="card">
+        <img src="Images/PokemonPond.png" alt="Pokemon Pond screenshot" />
         <div class="card-body">
-          <h4>Pokemon Pond</h4>
-          <p>a virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment.
-            This project brings the ecosystem to life by modeling the behavior and survival of organisms through a 2D
-            grid.
+          <h2 class="card-title"><a href="https://github.com/FinnWant/PokePond">Pokemon Pond</a></h2>
+          <ul class="tags">
+            <li>C++</li>
+            <li>Simulation</li>
+          </ul>
+          <p>A virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment. This
+            project brings the ecosystem to life by modeling the behavior and survival of organisms through a 2D grid.
             In this world, fish swim around and consume plants to sustain themselves, while plants grow with water and
-            sunlight,
-            only losing mass when they’re nibbled on by the fish.<br><i>Link to Repo:</i>
-            <a href="https://github.com/FinnWant/PokePond">https://github.com/FinnWant/PokePond</a>
-          </p>
+            sunlight, only losing mass when they're nibbled on by the fish.</p>
+          <p class="card-link"><a href="https://github.com/FinnWant/PokePond">View repository on GitHub</a></p>
         </div>
       </article>
 
-      <article class="card">
-        <img src="Images/WHAB.png" alt="Project screenshot" />
+      <article id="project-2" class="card">
+        <img src="Images/WHAB.png" alt="Warhammer Army Builder screenshot" />
         <div class="card-body">
-          <h4>WarHammer Table Top Army Builder</h4>
-          <p>This is a QT based web application that lets you build and create armys for the table top war game
-            Warhammer 40k.
+          <h2 class="card-title"><a href="https://github.com/FinnWant/WHArmy_Builder">WarHammer Table Top Army
+              Builder</a></h2>
+          <ul class="tags">
+            <li>C++</li>
+            <li>Qt</li>
+            <li>CMake</li>
+          </ul>
+          <p>A Qt-based application that lets you build and create armies for the tabletop war game Warhammer 40k.
             Create new units or armies, see stats on units and your army as a whole, and share your army builds on the
-            forms for all to see!
-            <br><strong>WORK IN PROGRESS</strong><br><progress id="project" max="100" value="50">
-              50%</progress><br><i>Link to Repo:</i>
-            <a href="https://github.com/FinnWant/WHArmy_Builder">https://github.com/FinnWant/WHArmy_Builder</a>
+            forums for all to see!</p>
+          <p><span class="wip">Work in progress</span>
+            <progress max="100" value="50">50%</progress>
           </p>
+          <p class="card-link"><a href="https://github.com/FinnWant/WHArmy_Builder">View repository on GitHub</a></p>
         </div>
       </article>
 
-      <article class="card">
-        <img src="Images/PokemonBattle.png" alt="Project screenshot" />
+      <article id="project-3" class="card">
+        <img src="Images/PokemonBattle.png" alt="Pokemon Battle Simulator screenshot" />
         <div class="card-body">
-          <h4>Pokemon Battle Simulator</h4>
-          <p>A simple text based Pokemon battle simulator. Choose your Pokemon or create enitrely new ones and battle
-            against a computer opponent.
-            Each Pokemon has its own unique stats and moves. This simulator includes the real damage formula used in
-            the actual games. Soon to be added: GUI, type advantages, and more!<br><i>Link to Repo:</i>
-            <a href="https://github.com/FinnWant/Pokemon-Project">https://github.com/FinnWant/Pokemon-Project</a>
-          </p>
+          <h2 class="card-title"><a href="https://github.com/FinnWant/Pokemon-Project">Pokemon Battle Simulator</a>
+          </h2>
+          <ul class="tags">
+            <li>C++</li>
+            <li>CLI</li>
+          </ul>
+          <p>A simple text based Pokemon battle simulator. Choose your Pokemon or create entirely new ones and battle
+            against a computer opponent. Each Pokemon has its own unique stats and moves. This simulator includes the
+            real damage formula used in the actual games. Soon to be added: GUI, type advantages, and more!</p>
+          <p class="card-link"><a href="https://github.com/FinnWant/Pokemon-Project">View repository on GitHub</a></p>
         </div>
       </article>
 
       <article id="project-4" class="card">
-        <img src="Images/FBGM.png" alt="Project screenshot" />
+        <img src="Images/FBGM.png" alt="Football GM Simulator screenshot" />
         <div class="card-body">
-          <h4>Football Simulator</h4>
-          <p>This is a simple console based game that lets you make custom teams or players to create the football
-            team of you dreams!
-            If you want to jump straight into the action, you can use one of the premade teams and play against a
-            computer opponent.
-            Each player has their own unique stats that will affect how they perform on the field. This includes QB
-            accuracy, WR catching, and RB speed.
-            I plan on adding ways to manage your team such as trades, drafts, and a season mode!
-          </p><br><i>Link to Repo:</i>
-          <a
-            href="https://github.com/FinnWant/Football-GM-Simulator">https://github.com/FinnWant/Football-GM-Simulator</a>
+          <h2 class="card-title"><a href="https://github.com/FinnWant/Football-GM-Simulator">Football Simulator</a>
+          </h2>
+          <ul class="tags">
+            <li>C++</li>
+            <li>CLI</li>
+          </ul>
+          <p>A simple console based game that lets you make custom teams or players to create the football team of
+            your dreams! If you want to jump straight into the action, you can use one of the premade teams and play
+            against a computer opponent. Each player has their own unique stats that affect how they perform on the
+            field, including QB accuracy, WR catching, and RB speed. I plan on adding ways to manage your team such as
+            trades, drafts, and a season mode!</p>
+          <p class="card-link"><a href="https://github.com/FinnWant/Football-GM-Simulator">View repository on
+              GitHub</a></p>
         </div>
       </article>
     </div>
@@ -103,11 +133,11 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; <span id="year2"></span> Finnagin Wantland</p>
+      <p>&copy; <span class="js-year"></span> Finnagin Wantland</p>
     </div>
   </footer>
 
-  <script>document.getElementById('year2').textContent = new Date().getFullYear();</script>
+  <script src="site.js"></script>
 </body>
 
 </html>

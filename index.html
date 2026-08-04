@@ -4,212 +4,224 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Finngain Wantland — Projects & Blog</title>
-  <meta name="description" content="Personal portfolio and blog showcasing coding projects." />
+  <title>Finnagin Wantland — Computer Science Student & Aspiring Engineer</title>
+  <meta name="description"
+    content="Portfolio and blog of Finnagin Wantland, a senior Computer Science student at UNLV seeking software and AI/ML engineering roles." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://finnwant.github.io/" />
+
+  <!-- Social preview. og:image must be an absolute URL or LinkedIn/X will ignore it. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://finnwant.github.io/" />
+  <meta property="og:title" content="Finnagin Wantland — Computer Science Student & Aspiring Engineer" />
+  <meta property="og:description"
+    content="Senior CS student at UNLV building C++ simulations and Qt desktop apps. Seeking software and AI/ML engineering roles." />
+  <meta property="og:image" content="https://finnwant.github.io/Images/HeroIMG.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@FinnWantland" />
+
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .about-section .about-images {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      /* stack on small screens */
-      margin-bottom: 1.5rem;
-    }
-
-    .about-section .about-images img {
-      border-radius: 15%;
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      display: block;
-      /* center handled by flex container */
-    }
-
-    @media (max-width: 700px) {
-      .about-section .about-images img {
-        width: 200px;
-        height: 200px;
-      }
-    }
-  </style>
 </head>
 
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <h1 class="site-title"><a href="index.html">Finnagin Wantland</a></h1>
-      <nav>
-        <img src="Images/university-of-nevada-las-vegas-logo.png" alt="Logo Image" height="130" width="200" />
-        <style>
-          .site-header img {
-            vertical-align: middle;
-          }
-        </style>
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="Images/university-of-nevada-las-vegas-logo.png"
+          alt="University of Nevada, Las Vegas" />
+        <span class="brand-name">Finnagin Wantland
+          <span class="brand-tag">Computer Science, UNLV</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main">
         <ul class="nav">
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html" aria-current="page">Home</a></li>
           <li><a href="projects.html">Projects</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">Resume</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
+
   <main class="container">
     <section class="hero">
       <div class="hero-text">
         <h1>Hello, I'm <strong>Finnagin Wantland</strong></h1>
-        <p>Welcome to my personal website! I'm a student at University of Nevada - Las Vegas, and I'm passionate about
-          coding and technology. Here, you'll find my latest projects and blog posts documenting my technical journey.
-        </p>
-        <p><a class="btn" href="projects.html">View projects</a> <a class="btn ghost" href="blog.html">Read blog</a>
-        <div class="VisitButton">
-          Visits: <span id="visitCount">Loading…</span>
+        <p>Welcome to my personal website! I'm a senior Computer Science student at the University of Nevada — Las
+          Vegas, and I'm passionate about coding and technology. Here, you'll find my latest projects and blog posts
+          documenting my technical journey. I'm currently looking for internships and entry-level roles in software
+          or AI/ML engineering.</p>
+        <div class="hero-actions">
+          <a class="btn" href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">Download résumé</a>
+          <a class="btn ghost" href="projects.html">View projects</a>
+          <a class="btn ghost" href="blog.html">Read blog</a>
         </div>
-
-        <button id="visitBtn">I visited!</button></p>
+        <div class="visit-counter">
+          <span>Visits: <span id="visitCount">Loading…</span></span>
+          <button id="visitBtn" type="button">I visited!</button>
+        </div>
       </div>
       <div class="hero-image">
-        <img src="Images/HeroIMG.jpg" alt="Your profile image" />
-        <style>
-          .hero-image img {
-            border-radius: 50%;
-            width: 400px;
-            height: 400px;
-            object-fit: cover;
-          }
-        </style>
+        <img src="Images/HeroIMG.jpg" alt="Finnagin Wantland" />
       </div>
     </section>
+
+    <section class="highlights">
+      <h2>Highlights</h2>
+      <div class="grid highlights-grid">
+        <article class="highlight">
+          <h3>MFMVault.com</h3>
+          <span class="meta">Contributor</span>
+          <p>Contributed to MFMVault.com, a live production website.</p>
+        </article>
+        <article class="highlight">
+          <h3>AI Engineer World's Fair</h3>
+          <span class="meta">Volunteer · San Francisco</span>
+          <p>Volunteered at the AI Engineer World's Fair, meeting engineers and teams building with AI in production.
+          </p>
+        </article>
+        <article class="highlight">
+          <h3>B.S. Computer Science</h3>
+          <span class="meta">University of Nevada — Las Vegas · Senior</span>
+          <p>Coursework and personal projects focused on simulation, algorithms, and desktop application development.
+          </p>
+        </article>
+      </div>
+    </section>
+
     <section class="Recent-Projects">
       <h2>Recent Projects</h2>
       <div class="grid projects-grid">
         <article class="card">
-          <img src="Images/PokemonPond.png" alt="Project screenshot" />
+          <img src="Images/PokemonPond.png" alt="Pokemon Pond screenshot" />
           <div class="card-body">
-            <h4><a href="projects.html#project-1">Pokemon Pond</a></h4>
-            <p>a virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment.
-              This project brings the ecosystem to life by modeling the behavior and survival of organisms through a 2D
-              grid.
-              In this world, fish swim around and consume plants to sustain themselves, while plants grow with water and
-              sunlight,
-              only losing mass when they’re nibbled on by the fish.<br><i>Link to Repo:</i>
-              <a href="https://github.com/FinnWant/PokePond">https://github.com/FinnWant/PokePond</a>
-            </p>
+            <h3><a href="projects.html#project-1">Pokemon Pond</a></h3>
+            <ul class="tags">
+              <li>C++</li>
+              <li>Simulation</li>
+            </ul>
+            <p>A virtual ecosystem where fish and plants interact in a lively and dynamic aquatic environment,
+              modelling the behavior and survival of organisms through a 2D grid.</p>
+            <p class="card-link"><a href="https://github.com/FinnWant/PokePond">View repository on GitHub</a></p>
           </div>
         </article>
+
         <article class="card">
-          <img src="Images/WHAB.png" alt="Project screenshot" />
+          <img src="Images/WHAB.png" alt="Warhammer Army Builder screenshot" />
           <div class="card-body">
-            <h4><a href="projects.html#project-2">WarHammer Table Top Army Builder</a></h4>
-            <p>This is a QT based web application that lets you build and create armys for the table top war game
-              Warhammer 40k.
-              Create new units or armies, see stats on units and your army as a whole, and share your army builds on the
-              forms for all to see!
-              <br><strong>WORK IN PROGRESS</strong><br><progress id="project" max="100" value="50">
-                50%</progress><br><i>Link to Repo:</i>
-              <a href="https://github.com/FinnWant/WHArmy_Builder">https://github.com/FinnWant/WHArmy_Builder</a>
+            <h3><a href="projects.html#project-2">WarHammer Table Top Army Builder</a></h3>
+            <ul class="tags">
+              <li>C++</li>
+              <li>Qt</li>
+              <li>CMake</li>
+            </ul>
+            <p>A Qt-based application for building armies for the tabletop war game Warhammer 40k — create units,
+              see stats for your whole army, and share builds.</p>
+            <p><span class="wip">Work in progress</span>
+              <progress max="100" value="50">50%</progress>
             </p>
+            <p class="card-link"><a href="https://github.com/FinnWant/WHArmy_Builder">View repository on GitHub</a></p>
           </div>
         </article>
+
         <article class="card">
-          <img src="Images/FBGM.png" alt="Project screenshot" />
+          <img src="Images/FBGM.png" alt="Football GM Simulator screenshot" />
           <div class="card-body">
-            <h4><a href="projects.html#project-4">Football Simulator</a></h4>
-            <p>This is a simple console based game that lets you make custom teams or players to create the football
-              team of you dreams!
-              If you want to jump straight into the action, you can use one of the premade teams and play against a
-              computer opponent.
-              Each player has their own unique stats that will affect how they perform on the field. This includes QB
-              accuracy, WR catching, and RB speed.
-              I plan on adding ways to manage your team such as trades, drafts, and a season mode!
-              <br><i>Link to Repo:</i>
-              <a
-                href="https://github.com/FinnWant/Football-GM-Simulator">https://github.com/FinnWant/Football-GM-Simulator</a>
-            </p>
+            <h3><a href="projects.html#project-4">Football Simulator</a></h3>
+            <ul class="tags">
+              <li>C++</li>
+              <li>CLI</li>
+            </ul>
+            <p>A console game for building custom football teams and players, with per-player stats — QB accuracy,
+              WR catching, RB speed — that drive how they perform on the field.</p>
+            <p class="card-link"><a href="https://github.com/FinnWant/Football-GM-Simulator">View repository on
+                GitHub</a></p>
           </div>
         </article>
       </div>
     </section>
+
     <section class="about-section">
-      <h1 style="text-align: center">About Me</h1>
+      <h2>About Me</h2>
       <div class="about-images">
-        <img src="Images/MEandDAD.png" alt="About Me Image" />
-        <img src="Images/MEandMOM.png" alt="About Me Image" />
+        <img src="Images/MEandDAD.png" alt="Finnagin Wantland with his dad" />
+        <img src="Images/MEandMOM.png" alt="Finnagin Wantland with his mom" />
       </div>
-      <p>I am a senior Computer Science student at the University of Nevada - Las Vegas and an aspiring engineer. I
-        fell
-        in love with
-        coding and AI my freshman year thanks to my cousin Greg introducing me to Python. Since then I knew this was my
-        calling and have
-        enjoyed every minute of my journey so far! I had the honor to work on some cool projects like MFMVault.com and
-        volunteering at the
-        AI Engineer world fair in San Francisco. I am currently looking for internships or entry level positions in
-        software engineering
-        or AI/ML engineering. Feel free to reach out to me through the contact section below and thank you for visiting
-        my site!
-      </p>
+      <p>I am a senior Computer Science student at the University of Nevada — Las Vegas and an aspiring engineer. I
+        fell in love with coding and AI my freshman year thanks to my cousin Greg introducing me to Python. Since then
+        I knew this was my calling and have enjoyed every minute of my journey so far! I am currently looking for
+        internships or entry level positions in software engineering or AI/ML engineering. Feel free to reach out
+        through the contact section below — and thank you for visiting my site!</p>
     </section>
 
     <section id="contact" class="contact">
-      <h3>Contact Me</h3>
+      <h2>Contact Me</h2>
       <p>Drop me a line at <a href="mailto:FW8383@proton.me">FW8383@proton.me</a><br>
         Connect with me on <a href="https://www.linkedin.com/in/finnagin-wantland-955472329/">LinkedIn</a><br>
         Follow me on X (formerly Twitter): <a href="https://twitter.com/FinnWantland">FinnWantland</a><br>
-        Check out my <a href="https://github.com/FinnWant">Github</a>
+        Check out my <a href="https://github.com/FinnWant">Github</a><br>
+        Read my <a href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">résumé</a>
       </p>
     </section>
+  </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <p>&copy; <span id="year"></span> Finnagin Wantland — Built with HTML & CSS</p>
-      </div>
-    </footer>
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span class="js-year"></span> Finnagin Wantland — Built with HTML &amp; CSS</p>
+    </div>
+  </footer>
 
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
+  <script src="site.js"></script>
+  <script>
+    const WORKSPACE = "finnaginwantlands-team-2827";
+    const COUNTER = "first-counter-2827";
 
-    <script>
-      const WORKSPACE = "finnaginwantlands-team-2827";
-      const COUNTER = "first-counter-2827";
+    const GET_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}`;
+    const UP_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}/up`;
+    const VISIT_KEY = "visited_v1";
 
-      const GET_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}`;
-      const UP_URL = `https://api.counterapi.dev/v2/${WORKSPACE}/${COUNTER}/up`;
+    // Both endpoints return the CounterAPI v2 shape, so /up gives us the
+    // fresh total without needing a second read.
+    async function loadCount(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`CounterAPI responded ${res.status}`);
+      const count = (await res.json())?.data?.up_count;
+      if (typeof count !== "number") throw new Error("Unexpected CounterAPI response");
+      return count;
+    }
 
-      function extractCount(json) {
-        // CounterAPI v2 format
-        return json?.data?.up_count ?? 0;
-      }
+    (async () => {
+      const countEl = document.getElementById("visitCount");
+      const btn = document.getElementById("visitBtn");
 
-      (async () => {
-        const countEl = document.getElementById("visitCount");
-        const btn = document.getElementById("visitBtn");
-
-        // Load current count
-        const getRes = await fetch(GET_URL);
-        const VISIT_KEY = "visited_v1";
-
-        if (!localStorage.getItem(VISIT_KEY)) {
-          localStorage.setItem(VISIT_KEY, "1");
-          const res = await fetch(UP_URL);
-          const json = await res.json();
-          countEl.textContent = extractCount(json);
+      btn.addEventListener("click", async () => {
+        btn.disabled = true;
+        try {
+          countEl.textContent = await loadCount(UP_URL);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          btn.disabled = false;
         }
-        const getJson = await getRes.json();
-        countEl.textContent = extractCount(getJson);
+      });
 
-        // Increment on button click
-        btn.addEventListener("click", async () => {
-          const upRes = await fetch(UP_URL);
-          const upJson = await upRes.json();
-          countEl.textContent = extractCount(upJson);
-        });
-      })().catch(console.error);
-    </script>
-
+      // Count each browser once automatically; later visits just read the total.
+      const firstVisit = !localStorage.getItem(VISIT_KEY);
+      try {
+        const count = await loadCount(firstVisit ? UP_URL : GET_URL);
+        if (firstVisit) localStorage.setItem(VISIT_KEY, "1");
+        countEl.textContent = count;
+      } catch (err) {
+        countEl.textContent = "unavailable";
+        console.error(err);
+      }
+    })();
+  </script>
 </body>
 
 </html>

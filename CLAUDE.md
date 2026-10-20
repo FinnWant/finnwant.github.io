@@ -18,7 +18,7 @@ Run every git command from inside `finnwant.github.io/`. Committing from the out
 There is no build step, package manager, test suite, or linter. It is hand-written static HTML + CSS.
 
 - **Preview locally:** `python3 -m http.server 8000` from this directory, then open `http://localhost:8000`. Use a server rather than `file://` so relative paths and `fetch` behave like production.
-- **Deploy:** pushing to `main` publishes to GitHub Pages at `https://finnwant.github.io`. There is no CI, staging, or preview environment — a push is the deploy.
+- **Deploy:** the site is served from a self-hosted web server at home, reached through the Cloudflare-managed domain `https://finnwantland.dev`. It is **not** on GitHub Pages any more — GitHub is only the source repo, and pushing to `main` does not publish anything. The server must serve only the site files: never expose `.git/`, `worker/`, or `CLAUDE.md` from the web root.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ Every page links to **`Finnagin-Wantland-Resume.pdf` at the repo root** — nav 
 
 **Everything is themed through custom properties.** `:root` defines the tokens; a `prefers-color-scheme: dark` block overrides them. Any new rule must use `var(--…)` for color — a literal hex will look correct in light mode and break in dark. Note that dark mode **cannot** reuse the brand red `#b10202` (it fails contrast on a dark background), so it swaps in a lightened `--accent` and flips button text to a dark `--accent-on`. The brand red appears exactly twice in the codebase, both as token declarations.
 
-**`site.js` is shared by all pages** and handles the footer year (any `.js-year` element — no per-page IDs) and the mobile nav toggle. Page-specific scripts stay inline on their own page; the visit counter is the only one.
+**`site.js` is shared by all pages** and handles the footer year (any `.js-year` element — no per-page IDs) and the mobile nav toggle. Page-specific scripts stay inline on their own page (the visit counter and contact form, both on `index.html`).
 
 **Responsive breakpoint is 760px**, defined in both `styles.css` and the `matchMedia` reset in `site.js`. Changing one requires changing the other.
 
@@ -48,6 +48,8 @@ Every page links to **`Finnagin-Wantland-Resume.pdf` at the repo root** — nav 
 **Visit counter** (`index.html` only) calls the public CounterAPI v2 service — no key or account needed, and it sends `Access-Control-Allow-Origin: *` so browser `fetch` works. `WORKSPACE`/`COUNTER` constants and the `visited_v1` localStorage key control it. A browser's first visit calls `/up`; later visits only read. Both endpoints return the same `{data:{up_count}}` shape, so `/up` doubles as the read — never pair an `/up` with a separate `GET`, since a `GET` issued before the increment returns a stale count.
 
 When testing the counter by hand, use the plain read URL. Hitting `/up` from curl or a script permanently inflates the real public count.
+
+**Contact form** (`index.html` only): clicking the email link opens a `<dialog>` form (the `mailto:` href is the no-JS fallback). It posts JSON to a Cloudflare Worker in `worker/`, which verifies the Turnstile token with `TURNSTILE_SECRET` (a Wrangler secret, never committed) and emails `TO_ADDRESS` via the `send_email` binding. The Worker runs on Cloudflare, not the home server, and is deployed separately with `npx wrangler deploy` from `worker/`. The page-side `CONTACT_ENDPOINT` and Turnstile `data-sitekey` must match the deployed Worker and widget; if the site's origin changes, update `ALLOWED_ORIGINS` in `worker/wrangler.toml` and the widget's hostname list in Cloudflare.
 
 ## Blog posts
 
@@ -62,7 +64,7 @@ Adding a post means appending an `<li>` to `.post-list` in `blog.html` with the 
 
 ## Mistakes previously fixed here — don't reintroduce
 
-- **Backslash paths.** `blog.html` once linked posts as `posts\Py_Learning_Notebook.html`. Backslashes are not path separators in URLs and 404 on GitHub Pages. Always forward slashes.
+- **Backslash paths.** `blog.html` once linked posts as `posts\Py_Learning_Notebook.html`. Backslashes are not path separators in URLs and 404 on a real web server. Always forward slashes.
 - **Cross-page anchors without targets.** `index.html` project cards link to `projects.html#project-1`…`#project-4`; those `id`s must exist on the `<article>` elements in `projects.html`.
 - **`<div>` inside `<p>`.** The browser auto-closes the paragraph, silently restructuring the hero.
 - **Unclosed `<main>`** in `index.html`, which pulled the footer and scripts inside the content column.

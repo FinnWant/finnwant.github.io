@@ -8,15 +8,15 @@
   <meta name="description"
     content="Portfolio and blog of Finnagin Wantland, a senior Computer Science student at UNLV seeking software and AI/ML engineering roles." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="canonical" href="https://finnwant.github.io/" />
+  <link rel="canonical" href="https://finnwantland.dev/" />
 
   <!-- Social preview. og:image must be an absolute URL or LinkedIn/X will ignore it. -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://finnwant.github.io/" />
+  <meta property="og:url" content="https://finnwantland.dev/" />
   <meta property="og:title" content="Finnagin Wantland — Computer Science Student & Aspiring Engineer" />
   <meta property="og:description"
     content="Senior CS student at UNLV building C++ simulations and Qt desktop apps. Seeking software and AI/ML engineering roles." />
-  <meta property="og:image" content="https://finnwant.github.io/Images/HeroIMG.jpg" />
+  <meta property="og:image" content="https://finnwantland.dev/Images/HeroIMG.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@FinnWantland" />
 
@@ -161,7 +161,7 @@
 
     <section id="contact" class="contact">
       <h2>Contact Me</h2>
-      <p>Drop me a line at <a href="mailto:FW8383@proton.me">FW8383@proton.me</a><br>
+      <p>Drop me a line at <a href="mailto:finn@finnwantland.dev" class="js-contact-open">finn@finnwantland.dev</a><br>
         Connect with me on <a href="https://www.linkedin.com/in/finnagin-wantland-955472329/">LinkedIn</a><br>
         Follow me on X (formerly Twitter): <a href="https://twitter.com/FinnWantland">FinnWantland</a><br>
         Check out my <a href="https://github.com/FinnWant">Github</a><br>
@@ -170,6 +170,36 @@
     </section>
   </main>
 
+  <dialog id="contact-dialog" class="contact-dialog" aria-labelledby="contact-dialog-title">
+    <form id="contact-form" class="contact-form">
+      <div class="contact-dialog-header">
+        <h2 id="contact-dialog-title">Send me a message</h2>
+        <button type="button" class="dialog-close js-contact-close" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Honeypot: hidden from people, filled in by bots; the Worker drops any submission that sets it. -->
+      <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off">
+
+      <label for="contact-name">Name</label>
+      <input id="contact-name" name="name" type="text" autocomplete="name" required>
+
+      <label for="contact-email">Email</label>
+      <input id="contact-email" name="email" type="email" autocomplete="email" required>
+
+      <label for="contact-message">Message</label>
+      <textarea id="contact-message" name="message" rows="6" required></textarea>
+
+      <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="auto"></div>
+
+      <p id="contact-status" class="contact-status" role="status" aria-live="polite"></p>
+
+      <div class="contact-actions">
+        <button type="button" class="btn ghost js-contact-close">Cancel</button>
+        <button type="submit" class="btn">Send</button>
+      </div>
+    </form>
+  </dialog>
+
   <footer class="site-footer">
     <div class="container">
       <p>&copy; <span class="js-year"></span> Finnagin Wantland — Built with HTML &amp; CSS</p>
@@ -177,6 +207,68 @@
   </footer>
 
   <script src="site.js"></script>
+  <!-- Renders the Turnstile widget into .cf-turnstile; the contact Worker (worker/) verifies the token. -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    // URL printed by `npx wrangler deploy` in worker/.
+    const CONTACT_ENDPOINT = "https://finn-contact-form.YOUR_SUBDOMAIN.workers.dev";
+
+    (() => {
+      const dialog = document.getElementById("contact-dialog");
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("contact-status");
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      // The mailto href stays as a fallback for browsers without <dialog> or JS.
+      document.querySelectorAll(".js-contact-open").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          if (typeof dialog.showModal !== "function") return;
+          e.preventDefault();
+          status.textContent = "";
+          dialog.showModal();
+        });
+      });
+
+      document.querySelectorAll(".js-contact-close").forEach((btn) => {
+        btn.addEventListener("click", () => dialog.close());
+      });
+
+      // Close when clicking the backdrop (the dialog element itself, outside the form).
+      dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+        if (!data["cf-turnstile-response"]) {
+          status.textContent = "Please complete the captcha.";
+          return;
+        }
+
+        submitBtn.disabled = true;
+        status.textContent = "Sending…";
+        try {
+          const res = await fetch(CONTACT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+          const json = await res.json();
+          if (!json.success) throw new Error(json.message || `Contact Worker responded ${res.status}`);
+          form.reset();
+          status.textContent = "Thanks! Your message has been sent.";
+        } catch (err) {
+          console.error(err);
+          status.textContent = "Something went wrong — please email finn@finnwantland.dev directly.";
+        } finally {
+          // Turnstile tokens are single-use, so get a fresh one for the next send.
+          window.turnstile?.reset();
+          submitBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
   <script>
     const WORKSPACE = "finnaginwantlands-team-2827";
     const COUNTER = "first-counter-2827";

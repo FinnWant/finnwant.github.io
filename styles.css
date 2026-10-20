@@ -15,6 +15,7 @@
   --radius: 10px;
   --shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
   --shadow-lift: 0 14px 30px rgba(16, 24, 40, 0.14);
+  --backdrop: rgba(15, 18, 22, 0.55);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,6 +34,7 @@
     --accent-soft: rgba(255, 106, 96, 0.14);
     --shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
     --shadow-lift: 0 14px 30px rgba(0, 0, 0, 0.6);
+    --backdrop: rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -341,6 +343,70 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 }
 
 .contact h2 { margin-top: 0 }
+
+/* contact dialog */
+.contact-dialog {
+  width: min(520px, calc(100vw - 2rem));
+  padding: 0;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+}
+
+.contact-dialog::backdrop { background: var(--backdrop) }
+
+.contact-form { display: flex; flex-direction: column; gap: 0.4rem; padding: 1.25rem }
+
+.contact-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem }
+
+.contact-dialog-header h2 { margin: 0; font-size: 1.3rem }
+
+.dialog-close {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}
+
+.dialog-close:hover { color: var(--text) }
+
+.contact-form label { font-weight: 600; font-size: 0.9rem; margin-top: 0.5rem }
+
+.contact-form input, .contact-form textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+}
+
+.contact-form textarea { resize: vertical }
+
+.contact-form .cf-turnstile { margin-top: 0.75rem }
+
+.contact-status { margin: 0.25rem 0 0 0; min-height: 1.6em; color: var(--muted); font-size: 0.9rem }
+
+.contact-actions { display: flex; justify-content: flex-end; gap: 0.6rem }
+
+.contact-actions button { font: inherit; cursor: pointer }
+
+.contact-actions button:disabled { opacity: 0.6; cursor: default }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 
 /* footer */
 .site-footer {

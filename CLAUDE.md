@@ -35,7 +35,7 @@ Every page links to **`Finnagin-Wantland-Resume.pdf` at the repo root** — nav 
 
 **The header/nav block is copy-pasted into all three pages.** Any nav change (new link, logo swap, `aria-current`) must be applied in `index.html`, `projects.html`, and `blog.html`. The same goes for project cards, which exist in both `index.html` and `projects.html`. This is the main maintenance cost of the site — there is no templating.
 
-**All CSS lives in `styles.css`.** There are deliberately **no inline `<style>` blocks and no hardcoded hex colors in the HTML** — the pages previously had `<style>` tags scattered mid-body (inside `<nav>`, inside `.hero-image`) whose specificity silently overrode the stylesheet. Keep it that way.
+**All CSS lives in `styles.css`**, linked as `styles.css?v=N` on all three pages. Cloudflare and browsers cache CSS for hours, so **bump `N` on all three pages whenever `styles.css` changes** or visitors get the old stylesheet with the new markup. There are deliberately **no inline `<style>` blocks and no hardcoded hex colors in the HTML** — the pages previously had `<style>` tags scattered mid-body (inside `<nav>`, inside `.hero-image`) whose specificity silently overrode the stylesheet. Keep it that way.
 
 **Everything is themed through custom properties.** `:root` defines the tokens; a `prefers-color-scheme: dark` block overrides them. Any new rule must use `var(--…)` for color — a literal hex will look correct in light mode and break in dark. Note that dark mode **cannot** reuse the brand red `#b10202` (it fails contrast on a dark background), so it swaps in a lightened `--accent` and flips button text to a dark `--accent-on`. The brand red appears exactly twice in the codebase, both as token declarations.
 

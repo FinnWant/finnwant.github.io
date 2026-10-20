@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@FinnWantland" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 
 <body>
@@ -189,7 +189,7 @@
       <label for="contact-message">Message</label>
       <textarea id="contact-message" name="message" rows="6" required></textarea>
 
-      <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="auto"></div>
+      <div id="contact-turnstile" class="cf-turnstile"></div>
 
       <p id="contact-status" class="contact-status" role="status" aria-live="polite"></p>
 
@@ -207,17 +207,41 @@
   </footer>
 
   <script src="site.js"></script>
-  <!-- Renders the Turnstile widget into .cf-turnstile; the contact Worker (worker/) verifies the token. -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Turnstile loads in explicit mode: the widget is rendered when the dialog first opens, not on page load.
+       The contact Worker (worker/) verifies the token. -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script>
+    // Site key from Cloudflare dashboard → Turnstile → your widget (public, safe to commit).
+    const TURNSTILE_SITE_KEY = "0x4AAAAAAFcbn6YBaVXiXI4p";
     // URL printed by `npx wrangler deploy` in worker/.
-    const CONTACT_ENDPOINT = "https://finn-contact-form.YOUR_SUBDOMAIN.workers.dev";
+    const CONTACT_ENDPOINT = "https://finn-contact-form.fwantland50.workers.dev";
 
     (() => {
       const dialog = document.getElementById("contact-dialog");
       const form = document.getElementById("contact-form");
       const status = document.getElementById("contact-status");
       const submitBtn = form.querySelector('button[type="submit"]');
+      let widgetId = null;
+
+      // Rendering inside the open dialog (rather than into a hidden one on page load)
+      // sizes the widget correctly and only runs the challenge for people who use the form.
+      function renderTurnstile() {
+        if (widgetId !== null) return;
+        if (!window.turnstile) {
+          status.textContent = "Captcha is still loading — one moment…";
+          setTimeout(renderTurnstile, 500);
+          return;
+        }
+        status.textContent = "";
+        widgetId = window.turnstile.render("#contact-turnstile", {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+          "error-callback": (code) => {
+            console.error("Turnstile error", code);
+            status.textContent = `Captcha failed to load (error ${code}).`;
+          },
+        });
+      }
 
       // The mailto href stays as a fallback for browsers without <dialog> or JS.
       document.querySelectorAll(".js-contact-open").forEach((link) => {
@@ -226,6 +250,7 @@
           e.preventDefault();
           status.textContent = "";
           dialog.showModal();
+          renderTurnstile();
         });
       });
 
@@ -263,7 +288,7 @@
           status.textContent = "Something went wrong — please email finn@finnwantland.dev directly.";
         } finally {
           // Turnstile tokens are single-use, so get a fresh one for the next send.
-          window.turnstile?.reset();
+          if (widgetId !== null) window.turnstile.reset(widgetId);
           submitBtn.disabled = false;
         }
       });

@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@FinnWantland" />
 
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 
 <body>
@@ -72,25 +72,54 @@
     </section>
 
     <section class="highlights">
-      <h2>Highlights</h2>
-      <div class="grid highlights-grid">
-        <article class="highlight">
-          <h3>MFMVault.com</h3>
-          <span class="meta">Contributor</span>
-          <p>Contributed to MFMVault.com, a live production website.</p>
-        </article>
-        <article class="highlight">
-          <h3>AI Engineer World's Fair</h3>
-          <span class="meta">Volunteer · San Francisco</span>
-          <p>Volunteered at the AI Engineer World's Fair, meeting engineers and teams building with AI in production.
-          </p>
-        </article>
-        <article class="highlight">
-          <h3>B.S. Computer Science</h3>
-          <span class="meta">University of Nevada — Las Vegas · Senior</span>
-          <p>Coursework and personal projects focused on simulation, algorithms, and desktop application development.
-          </p>
-        </article>
+      <div class="highlights-head">
+        <h2>Highlights</h2>
+        <button type="button" class="btn ghost highlights-pause" hidden aria-pressed="false">Pause</button>
+      </div>
+      <!-- Without JS this is a swipeable row; the inline script below turns it into an auto-scrolling marquee. -->
+      <div class="highlights-viewport">
+        <div class="highlights-track">
+          <article class="highlight">
+            <h3>Undergraduate Research Assistant</h3>
+            <span class="meta">Computing Research Association · May 2026 – Present</span>
+            <p>Building simulations of signalized intersections to test adaptive traffic-signal timing, measuring
+              vehicle delay, queue length, and throughput.</p>
+          </article>
+          <article class="highlight">
+            <h3>Customer Success Intern</h3>
+            <span class="meta">MoFlo · Aug 2026 – Present</span>
+            <p>About 9 client meetings a week — logging feedback and feature requests, and flagging bugs to engineering
+              with clear repro steps.</p>
+          </article>
+          <article class="highlight">
+            <h3>Coding Coach</h3>
+            <span class="meta">The Coder School · Dec 2025 – Aug 2026</span>
+            <p>Mentored ~12 young coders a week, teaching object-oriented game development in Unity and Godot.</p>
+          </article>
+          <article class="highlight">
+            <h3>MFMVault.com</h3>
+            <span class="meta">Data Collector &amp; Curator · Freelance</span>
+            <p>Labeled speakers across 600+ My First Million episodes and built out 200+ guest profiles for a live
+              production site.</p>
+          </article>
+          <article class="highlight">
+            <h3>B.S. Computer Science</h3>
+            <span class="meta">University of Nevada, Las Vegas · Expected May 2027</span>
+            <p>Dean's List in Spring 2024 and Spring 2026, with coursework in algorithms, data structures, and
+              programming languages.</p>
+          </article>
+          <article class="highlight">
+            <h3>AI Engineer World's Fair</h3>
+            <span class="meta">Volunteer · San Francisco</span>
+            <p>Volunteered at the AI Engineer World's Fair, meeting engineers and teams building with AI in production.
+            </p>
+          </article>
+          <article class="highlight">
+            <h3>NSLS Member</h3>
+            <span class="meta">National Society of Leadership and Success</span>
+            <p>Member of the largest leadership honor society in the U.S.</p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -211,6 +240,32 @@
   </footer>
 
   <script src="site.js"></script>
+  <script>
+    // Highlights marquee: clone the cards once so the track can loop seamlessly
+    // (it animates over exactly half its width). Clones are hidden from screen
+    // readers and keyboard. Reduced-motion users keep the plain swipeable row.
+    (() => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const section = document.querySelector(".highlights");
+      const track = section.querySelector(".highlights-track");
+      const pauseBtn = section.querySelector(".highlights-pause");
+
+      [...track.children].forEach((card) => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        clone.inert = true;
+        track.appendChild(clone);
+      });
+      section.classList.add("is-marquee");
+
+      pauseBtn.hidden = false;
+      pauseBtn.addEventListener("click", () => {
+        const paused = section.classList.toggle("is-paused");
+        pauseBtn.setAttribute("aria-pressed", String(paused));
+        pauseBtn.textContent = paused ? "Play" : "Pause";
+      });
+    })();
+  </script>
   <!-- Turnstile loads in explicit mode: the widget is rendered when the dialog first opens, not on page load.
        The contact Worker (worker/) verifies the token. -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>

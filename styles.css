@@ -209,7 +209,6 @@ a { color: var(--accent) }
 /* grids */
 .grid { display: grid; gap: 1.25rem }
 .projects-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
-.highlights-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) }
 
 /* cards */
 .card {
@@ -271,6 +270,52 @@ a { color: var(--accent) }
 
 /* highlights */
 .highlights { padding: 1rem 0 }
+
+.highlights-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.highlights-head h2 { margin: 0 }
+
+.highlights-pause { padding: 0.35rem 0.9rem; font-size: 0.9rem }
+
+/* Default (no JS / reduced motion): a swipeable row. */
+.highlights-viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+}
+
+.highlights-track { display: flex; width: max-content }
+
+/* Spacing is margin, not flex gap, so the cloned half is exactly 50% of the
+   track and the loop has no seam. */
+.highlights-track .highlight {
+  flex: 0 0 280px;
+  margin-right: 1.25rem;
+  scroll-snap-align: start;
+}
+
+/* Marquee (enabled by the inline script on index.html). Cards drift right to left. */
+.is-marquee .highlights-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.is-marquee .highlights-track { animation: highlights-scroll 55s linear infinite }
+
+.is-marquee .highlights-viewport:hover .highlights-track,
+.is-marquee.is-paused .highlights-track { animation-play-state: paused }
+
+@keyframes highlights-scroll {
+  from { transform: translateX(0) }
+  to { transform: translateX(-50%) }
+}
 
 .highlight {
   background: var(--surface-alt);

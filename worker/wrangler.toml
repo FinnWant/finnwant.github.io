@@ -1,0 +1,17 @@
+name = "finn-contact-form"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# The Turnstile secret key is NOT stored here. Set it once with:
+#   npx wrangler secret put TURNSTILE_SECRET
+
+[vars]
+# Must be an address Cloudflare Email Routing can deliver to (a verified destination).
+TO_ADDRESS = "finn@finnwantland.dev"
+# Any address on finnwantland.dev — it doesn't need its own inbox.
+FROM_ADDRESS = "contact@finnwantland.dev"
+# Only these sites may call the Worker. localhost is for `python3 -m http.server 8000`.
+ALLOWED_ORIGINS = "https://finnwantland.dev,https://www.finnwantland.dev,http://localhost:8000"
+
+[[send_email]]
+name = "EMAIL"

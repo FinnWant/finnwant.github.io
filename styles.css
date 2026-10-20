@@ -242,6 +242,8 @@ a { color: var(--accent) }
 
 .card-link { font-size: 0.9rem; word-break: break-word }
 
+.card-actions { padding-top: 0.25rem }
+
 /* tech pills */
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0 }
 

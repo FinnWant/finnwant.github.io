@@ -25,7 +25,7 @@ There is no build step, package manager, test suite, or linter. It is hand-writt
 Three top-level pages share `styles.css` and each carry a duplicated copy of the site chrome:
 
 - `index.html` — hero, Highlights, "Recent Projects" cards (duplicated from `projects.html`), About Me, `#contact`
-- `projects.html` — full project card list; cards are anchor targets (`#project-1`…`#project-4`), linked from the index
+- `projects.html` — full project card list; cards are anchor targets (`#project-1`…`#project-5`; ids are stable, not display order — MoKnowledge is `#project-5` but listed first), linked from the index
 - `blog.html` — index of posts under `posts/`
 - `styles.css` / `site.js` / `favicon.svg` — shared by all three
 
@@ -65,7 +65,7 @@ Adding a post means appending an `<li>` to `.post-list` in `blog.html` with the 
 ## Mistakes previously fixed here — don't reintroduce
 
 - **Backslash paths.** `blog.html` once linked posts as `posts\Py_Learning_Notebook.html`. Backslashes are not path separators in URLs and 404 on a real web server. Always forward slashes.
-- **Cross-page anchors without targets.** `index.html` project cards link to `projects.html#project-1`…`#project-4`; those `id`s must exist on the `<article>` elements in `projects.html`.
+- **Cross-page anchors without targets.** `index.html` project cards link to `projects.html#project-N`; those `id`s must exist on the `<article>` elements in `projects.html`.
 - **`<div>` inside `<p>`.** The browser auto-closes the paragraph, silently restructuring the hero.
 - **Unclosed `<main>`** in `index.html`, which pulled the footer and scripts inside the content column.
 - **Hardcoded colors and inline `<style>` blocks**, which broke dark mode and overrode the stylesheet.
@@ -89,4 +89,4 @@ for f in ['index.html','projects.html','blog.html']:
 
 ## Content conventions
 
-The site is a personal portfolio; content is first-person as Finnagin Wantland. Project cards follow a fixed shape: screenshot in `Images/`, `<h4>` title, description paragraph, `<i>Link to Repo:</i>` followed by the bare GitHub URL as both link text and href. In-progress projects add a `<strong>WORK IN PROGRESS</strong>` line plus a `<progress>` element.
+The site is a personal portfolio; content is first-person as Finnagin Wantland. Project cards follow a fixed shape: 16:9 screenshot in `Images/` (compressed JPEG, ~960px wide), heading (see heading rule above), `.tags` list, description paragraph, then `<p class="card-link">` with a "View repository on GitHub" link. In-progress projects add a `<span class="wip">` line plus a `<progress>` element. Projects with a live demo add `<p class="card-actions"><a class="btn" …>Try the live demo</a></p>` above the repo link. The MoKnowledge demo is a separate Next.js app self-hosted on the same server and served at `/moknowledge/` (Caddy proxies that path to the Next.js process; the app is built with `NEXT_PUBLIC_BASE_PATH=/moknowledge`). It is not part of this repo, so the demo link 404s under the local `python3 -m http.server` preview.

@@ -19,7 +19,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@FinnWantland" />
 
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 
 <body>
@@ -50,7 +50,7 @@
   <main class="container">
     <h1>Projects</h1>
     <p>
-      Below are several projects I have been building to explore algorithms, game simulations, and desktop tools. Each
+      Below are several projects I have been building to explore algorithms, game simulations, desktop tools, and web apps. Each
       entry includes a short description and a link to the public GitHub repository where you can read the source, try
       the code, and open issues or pull requests. If you'd like to run any project locally, check the repo README for
       prerequisites and quick start steps — or reach out and I can help you get it running. Contributions,
@@ -58,6 +58,26 @@
     </p>
 
     <div class="grid projects-grid">
+      <article id="project-5" class="card">
+        <img src="Images/MoKnowledge.jpg" alt="MoKnowledge screenshot showing an extracted company knowledge base" />
+        <div class="card-body">
+          <h2 class="card-title"><a href="https://github.com/FinnWant/MoKnowledge">MoKnowledge</a></h2>
+          <ul class="tags">
+            <li>TypeScript</li>
+            <li>Next.js</li>
+            <li>PostgreSQL</li>
+          </ul>
+          <p>Paste a company's website address and MoKnowledge crawls the site, extracts a structured knowledge base
+            from the real HTML, and shows exactly where every value came from. It never fabricates: missing details
+            are marked "Not found" rather than guessed, conflicting answers on the site are surfaced side by side for
+            a one-tap fix, and it asks a few ranked questions to fill the most valuable gaps. Reviewed results are
+            versioned and exported as JSON, with an optional multi-tenant Supabase/PostgreSQL backend.</p>
+          <p class="card-actions"><a class="btn" href="/moknowledge/" target="_blank"
+              rel="noopener">Try the live demo</a></p>
+          <p class="card-link"><a href="https://github.com/FinnWant/MoKnowledge">View repository on GitHub</a></p>
+        </div>
+      </article>
+
       <article id="project-1" class="card">
         <img src="Images/PokemonPond.jpg" alt="Pokemon Pond screenshot" />
         <div class="card-body">

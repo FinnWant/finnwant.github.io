@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@FinnWantland" />
 
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 
 <body>
@@ -51,19 +51,13 @@
   <main class="container">
     <section class="hero">
       <div class="hero-text">
-        <h1>Hello, I'm <strong>Finnagin Wantland</strong></h1>
-        <p>Welcome to my personal website! I'm a senior Computer Science student at the University of Nevada — Las
-          Vegas, and I'm passionate about coding and technology. Here, you'll find my latest projects and blog posts
-          documenting my technical journey. I'm currently looking for internships and entry-level roles in software
-          or AI/ML engineering.</p>
+        <h1>Hello, I'm Finnagin Wantland</h1>
+        <p>I'm a senior Computer Science student at UNLV, looking for internships and entry-level roles in software or
+          AI/ML engineering.</p>
         <div class="hero-actions">
-          <a class="btn" href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">Download résumé</a>
-          <a class="btn ghost" href="projects.html">View projects</a>
-          <a class="btn ghost" href="blog.html">Read blog</a>
-        </div>
-        <div class="visit-counter">
-          <span>Visits: <span id="visitCount">Loading…</span></span>
-          <button id="visitBtn" type="button">I visited!</button>
+          <a class="btn hero-cta" href="Finnagin-Wantland-Resume.pdf" target="_blank" rel="noopener">Download résumé</a>
+          <a class="text-link" href="projects.html">View projects<span class="text-link-arrow" aria-hidden="true">→</span></a>
+          <a class="text-link" href="blog.html">Read blog<span class="text-link-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="hero-image">
@@ -249,6 +243,10 @@
   <footer class="site-footer">
     <div class="container">
       <p>&copy; <span class="js-year"></span> Finnagin Wantland — Built with HTML &amp; CSS</p>
+      <div class="visit-counter">
+        <span>Visits: <span id="visitCount">Loading…</span></span>
+        <button id="visitBtn" type="button">I visited!</button>
+      </div>
     </div>
   </footer>
 

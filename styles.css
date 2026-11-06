@@ -13,6 +13,9 @@
   --card-title: #14181f;
   --card-text: #374151;
   --pill-neutral-bg: #f3f4f6;
+  --tag-text: #8f0000;
+  --tag-bg: #fdeeee;
+  --tag-border: #f0c4c4;
   --btn-secondary-border: #d1d5db;
   --btn-secondary-hover: #b00000;
   --border: #e5e7eb;
@@ -58,6 +61,9 @@
     --card-title: #e8eaed;
     --card-text: #c4cbd5;
     --pill-neutral-bg: #2b323b;
+    --tag-text: #ffb4ae;
+    --tag-bg: rgba(255, 106, 96, 0.14);
+    --tag-border: rgba(255, 106, 96, 0.4);
     --btn-secondary-border: #4b5563;
     --btn-secondary-hover: #ff6a60;
     --border: #2b323b;
@@ -301,7 +307,8 @@ a { color: var(--accent) }
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift) }
+/* Recent Projects cards have their own motion-gated hover, below. */
+.card:not(.Recent-Projects .card):hover { transform: translateY(-4px); box-shadow: var(--shadow-lift) }
 
 /* aspect-ratio keeps every screenshot cropped identically regardless of source size */
 .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover }
@@ -357,17 +364,26 @@ a { color: var(--accent) }
    to the bottom. Scoped so the longer cards on projects.html keep their own layout. */
 .Recent-Projects .projects-grid { align-items: stretch }
 
-.Recent-Projects .card-body { flex: 1; padding: 20px; gap: 12px }
+.Recent-Projects .card { display: flex; flex-direction: column; height: 100% }
 
-/* min-height is two title lines, so one-line titles keep the tags aligned. */
+.Recent-Projects .card-body { display: flex; flex-direction: column; flex: 1; padding: 20px; gap: 0 }
+
 .Recent-Projects .card-body h3 {
-  min-height: 2.4em;
+  margin-bottom: 12px;
   color: var(--card-title);
 }
 
 .Recent-Projects .card-body h3 a { color: inherit }
 
 .Recent-Projects .card-body p { color: var(--card-text) }
+
+.Recent-Projects .tags { margin-bottom: 12px }
+
+.Recent-Projects .tags li {
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+}
 
 .tags li.tag-status {
   color: var(--card-text);
@@ -377,7 +393,7 @@ a { color: var(--accent) }
 
 .Recent-Projects .card-actions {
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 16px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -406,6 +422,42 @@ a { color: var(--accent) }
 .btn-secondary:hover { color: var(--btn-secondary-hover); border-color: var(--btn-secondary-hover) }
 
 .btn-secondary:focus-visible { outline: 2px solid var(--btn-secondary-hover); outline-offset: 2px; border-radius: 8px }
+
+/* Each card takes five shared rows (image, title, tags, description, actions), so its
+   parts line up across a row. A row-gap would open up inside the cards too, so wrapped
+   rows are spaced by the card margin instead, which height:100% would overflow. */
+@media (min-width: 640px) {
+  @supports (grid-template-rows: subgrid) {
+    .Recent-Projects .projects-grid { row-gap: 0; margin-bottom: -24px }
+
+    .Recent-Projects .card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: subgrid;
+      grid-row: span 5;
+      height: auto;
+      margin-bottom: 24px;
+    }
+
+    .Recent-Projects .card-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+    }
+  }
+}
+
+@media (max-width: 639.98px) {
+  .Recent-Projects .projects-grid { gap: 20px }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Recent-Projects .card { transition: transform 150ms ease, box-shadow 150ms ease }
+
+  .Recent-Projects .card:hover,
+  .Recent-Projects .card:focus-within { transform: translateY(-3px); box-shadow: var(--shadow-lift) }
+}
 
 /* highlights */
 .highlights { padding: 1rem 0 }
@@ -712,8 +764,6 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
   .contact .btn { display: block; text-align: center }
 
   .Recent-Projects .projects-grid { grid-template-columns: minmax(0, 1fr) }
-
-  .Recent-Projects .card-body h3 { min-height: 0 }
 
   .Recent-Projects .card-actions a { flex: 1 }
 

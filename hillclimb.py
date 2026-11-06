@@ -24,6 +24,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import uuid
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -122,10 +123,19 @@ class Git:
         self.repo = repo
 
     def __call__(self, *args):
-        return subprocess.run(
-            ["git", "-c", "user.name=hillclimb", "-c", "user.email=hillclimb@local", *args],
-            cwd=self.repo, check=True, capture_output=True, text=True,
-        ).stdout
+        for attempt in range(10):
+            r = subprocess.run(
+                ["git", "-c", "user.name=hillclimb", "-c", "user.email=hillclimb@local",
+                 "-c", "commit.gpgsign=false", *args],
+                cwd=self.repo, capture_output=True, text=True,
+            )
+            if r.returncode == 0:
+                return r.stdout
+            # another program (VS Code, GitHub Desktop, OneDrive) briefly holds the lock
+            if "index.lock" in r.stderr and attempt < 9:
+                time.sleep(1)
+                continue
+            raise RuntimeError(f"git {' '.join(args[:2])} failed:\n{(r.stderr or r.stdout).strip()}")
 
     def setup(self):
         if not (self.repo / ".git").exists():

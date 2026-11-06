@@ -7,6 +7,7 @@
   --text: #111827;
   --muted: #5b6472;
   --highlight-text: #4b5563;
+  --highlight-body: #374151;
   --border: #e5e7eb;
   --accent: #b10202;
   --accent-hover: #8e0202;
@@ -27,6 +28,7 @@
     --text: #e8eaed;
     --muted: #a2acba;
     --highlight-text: #a2acba;
+    --highlight-body: #c4cbd5;
     --border: #2b323b;
     /* The brand red fails contrast on a dark background, so dark mode uses a
        lightened tint and flips button text to dark. */
@@ -211,6 +213,8 @@ a { color: var(--accent) }
 /* grids */
 .grid { display: grid; gap: 1.25rem }
 .projects-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+/* Matches the Highlights gap so the two index-page grids share column edges. */
+.Recent-Projects .projects-grid { gap: 24px }
 
 /* cards */
 .card {
@@ -275,7 +279,7 @@ a { color: var(--accent) }
 
 .highlights-track {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -287,11 +291,11 @@ a { color: var(--accent) }
   padding: 1.1rem;
 }
 
-.highlight h3 { margin: 0 0 0.35rem 0; font-size: 1.05rem }
+.highlight h3 { margin: 0 0 0.35rem 0; font-size: 1.125rem; font-weight: 600; color: var(--text) }
 
-.highlight p { margin: 0; color: var(--highlight-text); font-size: 0.95rem }
+.highlight p { margin: 0; color: var(--highlight-body); font-size: 0.9375rem; line-height: 1.55 }
 
-.highlight .meta { display: block; margin-bottom: 0.5rem; color: var(--highlight-text) }
+.highlight .meta { display: block; margin-bottom: 0.5rem; color: var(--highlight-text); font-size: 0.8125rem; font-weight: 500 }
 
 /* sections */
 section { margin-bottom: 2.5rem }
@@ -434,6 +438,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
 .meta { color: var(--muted); font-size: 0.9rem }
 
 /* responsive */
+@media (max-width: 899.98px) {
+  .highlights-track { grid-template-columns: repeat(2, 1fr) }
+}
+
 @media (max-width: 760px) {
   .nav-toggle { display: flex }
 
@@ -464,7 +472,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
 }
 
 @media (max-width: 640px) {
-  .highlights-track { grid-template-columns: 1fr }
+  .highlights-track { grid-template-columns: 1fr; gap: 16px }
+
+  .highlight { padding: 16px }
+
+  .highlight .meta { font-size: 0.875rem }
 }
 
 @media (prefers-reduced-motion: reduce) {

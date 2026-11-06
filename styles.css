@@ -18,6 +18,13 @@
   --shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
   --shadow-lift: 0 14px 30px rgba(16, 24, 40, 0.14);
   --backdrop: rgba(15, 18, 22, 0.55);
+  /* The contact panel is dark in both themes, so dark mode doesn't override these. */
+  --contact-bg: #14181f;
+  --contact-text: #ffffff;
+  --contact-body: #d1d5db;
+  --contact-label: #9ca3af;
+  --contact-hover: #ff8a8a;
+  --contact-rule: rgba(255, 255, 255, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -349,13 +356,70 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 /* contact */
 .contact {
-  padding: 1.5rem;
-  background: var(--surface-alt);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  margin-top: 2.5rem; /* same as the section margin-bottom above */
+  padding: 48px;
+  background: var(--contact-bg);
+  border-radius: 12px;
 }
 
-.contact h2 { margin-top: 0 }
+.contact h2 {
+  margin: 0 0 0.75rem 0;
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--contact-text);
+}
+
+.contact-intro p { margin: 0 0 1.5rem 0; font-size: 1.125rem; color: var(--contact-body) }
+
+.contact-links { list-style: none; margin: 0; padding: 0 }
+
+.contact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 56px;
+  padding-block: 0.5rem;
+  color: var(--contact-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--contact-rule);
+}
+
+.contact-label {
+  flex: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--contact-label);
+}
+
+/* min-width: 0 and anywhere let a long value wrap instead of widening the page. */
+.contact-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+
+.contact-arrow { flex: none; transition: transform 0.15s ease }
+
+.contact-row:hover .contact-value,
+.contact-row:focus-visible .contact-value { color: var(--contact-hover) }
+
+.contact-row:hover .contact-arrow,
+.contact-row:focus-visible .contact-arrow { transform: translateX(4px) }
+
+/* The global focus ring uses --accent, which is too dim on this panel in light mode. */
+.contact :focus-visible { outline: 2px solid var(--contact-hover); outline-offset: 2px }
 
 /* contact dialog */
 .contact-dialog {
@@ -471,6 +535,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
   .about-section p { font-size: 1rem }
 }
 
+@media (max-width: 720px) {
+  .contact { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 28px }
+
+  .contact .btn { display: block; text-align: center }
+}
+
 @media (max-width: 640px) {
   .highlights-track { grid-template-columns: 1fr; gap: 16px }
 
@@ -482,4 +552,5 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important }
   .card:hover, .post-list li:hover, .btn:hover { transform: none }
+  .contact-row:hover .contact-arrow, .contact-row:focus-visible .contact-arrow { transform: none }
 }

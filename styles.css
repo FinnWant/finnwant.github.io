@@ -7,7 +7,7 @@
   --text: #111827;
   --hero-intro: #1f2937;
   --muted: #5b6472;
-  --highlight-text: #4b5563;
+  --meta: #4b5563;
   --highlight-body: #374151;
   --card-title: #14181f;
   --card-text: #374151;
@@ -28,9 +28,20 @@
   --contact-bg: #14181f;
   --contact-text: #ffffff;
   --contact-body: #d1d5db;
-  --contact-label: #9ca3af;
+  --contact-label: #b6bdc8;
   --contact-hover: #ff8a8a;
   --contact-rule: rgba(255, 255, 255, 0.15);
+  /* Type. Display is only for the H1, section H2s, the Contact H2 and project card
+     titles; everything else is body. Nothing goes below --text-small. */
+  --font-display: 'Bricolage Grotesque', Georgia, serif;
+  --font-body: 'Inter', Arial, sans-serif;
+  --text-section: 2rem;
+  --text-card-title: 1.375rem;
+  --text-highlight-title: 1.0625rem;
+  --text-about: 1.0625rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
+  --text-small: 0.8125rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,7 +52,7 @@
     --text: #e8eaed;
     --hero-intro: #d1d5db;
     --muted: #a2acba;
-    --highlight-text: #a2acba;
+    --meta: #a2acba;
     --highlight-body: #c4cbd5;
     --card-title: #e8eaed;
     --card-text: #c4cbd5;
@@ -65,12 +76,15 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   -webkit-text-size-adjust: 100%;
 }
+
+h1 { font-family: var(--font-display); letter-spacing: -0.03em }
 
 img { max-width: 100% }
 
@@ -114,14 +128,9 @@ a { color: var(--accent) }
 
 .brand-logo { height: 52px; width: auto; display: block }
 
-.brand-name { font-size: 1.15rem; font-weight: 700; line-height: 1.2 }
+.brand-name { font-size: 1.15rem; font-weight: 600; line-height: 1.2 }
 
-.brand-tag {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--muted);
-}
+.brand-tag { display: block }
 
 .nav { list-style: none; padding: 0; margin: 0; display: flex; gap: 0.25rem; flex-wrap: wrap }
 
@@ -180,7 +189,6 @@ a { color: var(--accent) }
   font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -257,13 +265,11 @@ a { color: var(--accent) }
   justify-content: center;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.875rem;
-  color: var(--highlight-text);
 }
 
 .visit-counter button {
   font: inherit;
-  color: var(--highlight-text);
+  color: var(--meta);
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -303,13 +309,19 @@ a { color: var(--accent) }
 
 /* Card headings differ by page (h3 on the index, h2 on the projects page where
    each card is a top-level entry), so style both to look identical. */
-.card-body h2, .card-body h3 { margin: 0; font-size: 1.05rem }
+.card-body h2, .card-body h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-card-title);
+  font-weight: 700;
+  line-height: 1.2;
+}
 
 .card-body h2 a, .card-body h3 a { text-decoration: none }
 
 .card-body h2 a:hover, .card-body h3 a:hover { text-decoration: underline }
 
-.card-body p { margin: 0; color: var(--muted); font-size: 0.95rem }
+.card-body p { margin: 0; color: var(--muted); font-size: var(--text-body); line-height: 1.6 }
 
 .card-link { font-size: 0.9rem; word-break: break-word }
 
@@ -319,7 +331,7 @@ a { color: var(--accent) }
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0 }
 
 .tags li {
-  font-size: 0.75rem;
+  font-size: var(--text-small);
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--accent);
@@ -331,8 +343,8 @@ a { color: var(--accent) }
 
 .wip {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--text-small);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
@@ -348,16 +360,13 @@ a { color: var(--accent) }
 
 /* min-height is two title lines, so one-line titles keep the tags aligned. */
 .Recent-Projects .card-body h3 {
-  min-height: 2.5em;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.25;
+  min-height: 2.4em;
   color: var(--card-title);
 }
 
 .Recent-Projects .card-body h3 a { color: inherit }
 
-.Recent-Projects .card-body p { font-size: 1rem; line-height: 1.55; color: var(--card-text) }
+.Recent-Projects .card-body p { color: var(--card-text) }
 
 .tags li.tag-status {
   color: var(--card-text);
@@ -414,16 +423,31 @@ a { color: var(--accent) }
   padding: 1.1rem;
 }
 
-.highlight h3 { margin: 0 0 0.35rem 0; font-size: 1.125rem; font-weight: 600; color: var(--text) }
+.highlight h3 {
+  margin: 0 0 0.35rem 0;
+  font-size: var(--text-highlight-title);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+}
 
-.highlight p { margin: 0; color: var(--highlight-body); font-size: 0.9375rem; line-height: 1.55 }
+.highlight p { margin: 0; color: var(--highlight-body); font-size: var(--text-body); line-height: 1.6 }
 
-.highlight .meta { display: block; margin-bottom: 0.5rem; color: var(--highlight-text); font-size: 0.8125rem; font-weight: 500 }
+.highlight .meta { display: block; margin-bottom: 0.5rem }
 
 /* sections */
 section { margin-bottom: 2.5rem }
 
-h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
+h2 { margin: 0 0 1rem 0 }
+
+/* Scoped so the card, Contact and dialog H2s don't pick these up. */
+.Recent-Projects > h2, .highlights > h2, .about-section > h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
 
 /* about */
 .about-images {
@@ -445,9 +469,9 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 }
 
 .about-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  max-width: 70ch;
+  font-size: var(--text-about);
+  line-height: 1.65;
+  max-width: 65ch;
   margin: 0 auto 1.25rem auto;
 }
 
@@ -468,7 +492,7 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .post-list a:hover { text-decoration: underline }
 
-.post-list p { margin: 0.35rem 0 0 0; color: var(--muted); font-size: 0.95rem }
+.post-list p { margin: 0.35rem 0 0 0; color: var(--muted); font-size: var(--text-body) }
 
 /* contact */
 .contact {
@@ -483,6 +507,7 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .contact h2 {
   margin: 0 0 0.75rem 0;
+  font-family: var(--font-display);
   font-size: 2.25rem;
   font-weight: 800;
   line-height: 1.15;
@@ -507,7 +532,7 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .contact-label {
   flex: none;
-  font-size: 0.75rem;
+  font-size: var(--text-small);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--contact-label);
@@ -555,9 +580,10 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .contact-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem }
 
-.contact-dialog-header h2 { margin: 0; font-size: 1.3rem }
+.contact-dialog-header h2 { margin: 0; font-size: 1.3rem; font-weight: 600 }
 
 .dialog-close {
+  font-family: var(--font-body);
   font-size: 1.6rem;
   line-height: 1;
   color: var(--muted);
@@ -606,16 +632,17 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
   border-top: 1px solid var(--border);
   padding: 1.5rem 0;
   text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
 /* code block */
 pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; overflow: auto }
 
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace }
-
-.meta { color: var(--muted); font-size: 0.9rem }
+/* meta text. .post-list .meta is listed because .post-list p would otherwise win. */
+.meta, .post-list .meta, .brand-tag, .site-footer {
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--meta);
+}
 
 /* responsive */
 @media (max-width: 899.98px) {
@@ -646,6 +673,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
 }
 
 @media (max-width: 720px) {
+  :root { --text-section: 1.75rem; --text-card-title: 1.25rem }
+
   .hero { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 24px 0 48px }
 
   /* The text comes first in the source; only the visual order puts the photo on top. */
@@ -674,8 +703,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
   .highlights-track { grid-template-columns: 1fr; gap: 16px }
 
   .highlight { padding: 16px }
-
-  .highlight .meta { font-size: 0.875rem }
 }
 
 @media (prefers-reduced-motion: reduce) {

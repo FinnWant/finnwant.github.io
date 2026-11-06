@@ -7,7 +7,7 @@ compatibility_date = "2026-10-01"
 
 [vars]
 # Must be an address Cloudflare Email Routing can deliver to (a verified destination).
-TO_ADDRESS = "finn@finnwantland.dev"
+TO_ADDRESS = "fwantland50@gmail.com"
 # Any address on finnwantland.dev — it doesn't need its own inbox.
 FROM_ADDRESS = "contact@finnwantland.dev"
 # Only these sites may call the Worker. localhost is for `python3 -m http.server 8000`.

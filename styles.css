@@ -5,7 +5,16 @@
   --surface: #ffffff;
   --surface-alt: #f7f8fa;
   --text: #111827;
+  --hero-intro: #1f2937;
   --muted: #5b6472;
+  --meta: #4b5563;
+  --highlight-body: #374151;
+  --highlight-rule: #d1d5db;
+  --card-title: #14181f;
+  --card-text: #374151;
+  --pill-neutral-bg: #f3f4f6;
+  --btn-secondary-border: #d1d5db;
+  --btn-secondary-hover: #b00000;
   --border: #e5e7eb;
   --accent: #b10202;
   --accent-hover: #8e0202;
@@ -16,6 +25,23 @@
   --shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
   --shadow-lift: 0 14px 30px rgba(16, 24, 40, 0.14);
   --backdrop: rgba(15, 18, 22, 0.55);
+  /* The contact panel is dark in both themes, so dark mode doesn't override these. */
+  --contact-bg: #14181f;
+  --contact-text: #ffffff;
+  --contact-body: #d1d5db;
+  --contact-label: #b6bdc8;
+  --contact-hover: #ff8a8a;
+  --contact-rule: rgba(255, 255, 255, 0.15);
+  /* Type. Display is only for the H1, section H2s, the Contact H2 and project card
+     titles; everything else is body. Nothing goes below --text-small. */
+  --font-display: 'Bricolage Grotesque', Georgia, serif;
+  --font-body: 'Inter', Arial, sans-serif;
+  --text-section: 2rem;
+  --text-card-title: 1.375rem;
+  --text-highlight-title: 1.0625rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
+  --text-small: 0.8125rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,7 +50,16 @@
     --surface: #171b21;
     --surface-alt: #1d222a;
     --text: #e8eaed;
+    --hero-intro: #d1d5db;
     --muted: #a2acba;
+    --meta: #a2acba;
+    --highlight-body: #c4cbd5;
+    --highlight-rule: #4b5563;
+    --card-title: #e8eaed;
+    --card-text: #c4cbd5;
+    --pill-neutral-bg: #2b323b;
+    --btn-secondary-border: #4b5563;
+    --btn-secondary-hover: #ff6a60;
     --border: #2b323b;
     /* The brand red fails contrast on a dark background, so dark mode uses a
        lightened tint and flips button text to dark. */
@@ -42,12 +77,15 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   -webkit-text-size-adjust: 100%;
 }
+
+h1 { font-family: var(--font-display); letter-spacing: -0.03em }
 
 img { max-width: 100% }
 
@@ -91,14 +129,9 @@ a { color: var(--accent) }
 
 .brand-logo { height: 52px; width: auto; display: block }
 
-.brand-name { font-size: 1.15rem; font-weight: 700; line-height: 1.2 }
+.brand-name { font-size: 1.15rem; font-weight: 600; line-height: 1.2 }
 
-.brand-tag {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--muted);
-}
+.brand-tag { display: block }
 
 .nav { list-style: none; padding: 0; margin: 0; display: flex; gap: 0.25rem; flex-wrap: wrap }
 
@@ -142,26 +175,70 @@ a { color: var(--accent) }
 .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg) }
 
 /* hero */
-.hero { display: flex; gap: 2.5rem; align-items: center; padding: 2.5rem 0 }
+/* margin-bottom: 0 so the padding alone sets the gap to the next section. */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0 64px;
+  margin-bottom: 0;
+}
 
-.hero-text { flex: 1 1 340px }
+.hero-text h1 {
+  margin: 0 0 1rem 0;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  text-wrap: balance;
+}
 
-.hero-text h1 { margin: 0 0 0.75rem 0; font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15 }
-
-.hero-text p { margin: 0 0 1.25rem 0; max-width: 60ch }
-
-.hero-image { flex: 0 0 auto }
+.hero-text p {
+  margin: 0 0 1.75rem 0;
+  max-width: 60ch;
+  font-size: 1.25rem;
+  line-height: 1.55;
+  color: var(--hero-intro);
+}
 
 .hero-image img {
-  width: min(340px, 60vw);
-  aspect-ratio: 1;
+  width: 240px;
+  height: 240px;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid var(--accent);
+  border: 1px solid var(--border);
   display: block;
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center }
+
+.btn.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 1.0625rem;
+}
+
+/* inline-block rather than flex so the arrow (also inline-block) stays out of the underline.
+   24px line + 10px padding top and bottom = the 44px tap target. */
+.text-link {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 10px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-link:hover, .text-link:focus-visible { color: var(--accent-hover); text-decoration-thickness: 2px }
+
+.text-link-arrow { display: inline-block; margin-left: 0.35em; transition: transform 0.15s ease }
+
+.text-link:hover .text-link-arrow, .text-link:focus-visible .text-link-arrow { transform: translateX(4px) }
 
 /* buttons */
 .btn {
@@ -185,20 +262,20 @@ a { color: var(--accent) }
 /* visit counter */
 .visit-counter {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 0.6rem;
-  margin-top: 1.25rem;
-  font-size: 0.9rem;
-  color: var(--muted);
 }
 
 .visit-counter button {
   font: inherit;
-  color: var(--muted);
+  color: var(--meta);
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.25rem 0.75rem;
+  min-height: 44px;
+  padding: 0 1rem;
   cursor: pointer;
 }
 
@@ -209,6 +286,8 @@ a { color: var(--accent) }
 /* grids */
 .grid { display: grid; gap: 1.25rem }
 .projects-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+/* Matches the Highlights gap so the two index-page grids share column edges. */
+.Recent-Projects .projects-grid { gap: 24px }
 
 /* cards */
 .card {
@@ -231,13 +310,19 @@ a { color: var(--accent) }
 
 /* Card headings differ by page (h3 on the index, h2 on the projects page where
    each card is a top-level entry), so style both to look identical. */
-.card-body h2, .card-body h3 { margin: 0; font-size: 1.05rem }
+.card-body h2, .card-body h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-card-title);
+  font-weight: 700;
+  line-height: 1.2;
+}
 
 .card-body h2 a, .card-body h3 a { text-decoration: none }
 
 .card-body h2 a:hover, .card-body h3 a:hover { text-decoration: underline }
 
-.card-body p { margin: 0; color: var(--muted); font-size: 0.95rem }
+.card-body p { margin: 0; color: var(--muted); font-size: var(--text-body); line-height: 1.6 }
 
 .card-link { font-size: 0.9rem; word-break: break-word }
 
@@ -247,7 +332,7 @@ a { color: var(--accent) }
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0 }
 
 .tags li {
-  font-size: 0.75rem;
+  font-size: var(--text-small);
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--accent);
@@ -259,8 +344,8 @@ a { color: var(--accent) }
 
 .wip {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--text-small);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
@@ -268,99 +353,150 @@ a { color: var(--accent) }
 
 .card progress { width: 100%; height: 8px }
 
+/* Recent Projects cards (index only): title, tags, description, then actions pinned
+   to the bottom. Scoped so the longer cards on projects.html keep their own layout. */
+.Recent-Projects .projects-grid { align-items: stretch }
+
+.Recent-Projects .card-body { flex: 1; padding: 20px; gap: 12px }
+
+/* min-height is two title lines, so one-line titles keep the tags aligned. */
+.Recent-Projects .card-body h3 {
+  min-height: 2.4em;
+  color: var(--card-title);
+}
+
+.Recent-Projects .card-body h3 a { color: inherit }
+
+.Recent-Projects .card-body p { color: var(--card-text) }
+
+.tags li.tag-status {
+  color: var(--card-text);
+  background: var(--pill-neutral-bg);
+  border-color: var(--pill-neutral-bg);
+}
+
+.Recent-Projects .card-actions {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.Recent-Projects .card-actions .btn,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  color: var(--card-title);
+  border: 1px solid var(--btn-secondary-border);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary:hover { color: var(--btn-secondary-hover); border-color: var(--btn-secondary-hover) }
+
+.btn-secondary:focus-visible { outline: 2px solid var(--btn-secondary-hover); outline-offset: 2px; border-radius: 8px }
+
 /* highlights */
 .highlights { padding: 1rem 0 }
 
-.highlights-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.highlights-head h2 { margin: 0 }
-
-.highlights-pause { padding: 0.35rem 0.9rem; font-size: 0.9rem }
-
-/* Default (no JS / reduced motion): a swipeable row. */
-.highlights-viewport {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
-}
-
-.highlights-track { display: flex; width: max-content }
-
-/* Spacing is margin, not flex gap, so the cloned half is exactly 50% of the
-   track and the loop has no seam. */
-.highlights-track .highlight {
-  flex: 0 0 280px;
-  margin-right: 1.25rem;
-  scroll-snap-align: start;
-}
-
-/* Marquee (enabled by the inline script on index.html). Cards drift right to left. */
-.is-marquee .highlights-viewport {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-}
-
-.is-marquee .highlights-track { animation: highlights-scroll 55s linear infinite }
-
-.is-marquee .highlights-viewport:hover .highlights-track,
-.is-marquee.is-paused .highlights-track { animation-play-state: paused }
-
-@keyframes highlights-scroll {
-  from { transform: translateX(0) }
-  to { transform: translateX(-50%) }
+/* Columns and column gap match .Recent-Projects .projects-grid. */
+.highlights-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 24px;
+  align-items: stretch;
 }
 
 .highlight {
-  background: var(--surface-alt);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 1.1rem;
+  border-top: 1px solid var(--highlight-rule);
+  padding-top: 16px;
 }
 
-.highlight h3 { margin: 0 0 0.35rem 0; font-size: 1.05rem }
+.highlight h3 {
+  margin: 0 0 4px 0;
+  font-family: var(--font-body);
+  font-size: var(--text-highlight-title);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--card-title);
+}
 
-.highlight p { margin: 0; color: var(--muted); font-size: 0.95rem }
+.highlight-meta { margin-bottom: 12px }
 
-.highlight .meta { display: block; margin-bottom: 0.5rem }
+.highlight-org, .highlight-date {
+  display: block;
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--meta);
+}
+
+.highlight-date { white-space: nowrap }
+
+.highlight p { margin: 0; color: var(--highlight-body); font-size: var(--text-body); line-height: 1.6 }
 
 /* sections */
 section { margin-bottom: 2.5rem }
 
-h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
+h2 { margin: 0 0 1rem 0 }
+
+/* Scoped so the card, Contact and dialog H2s don't pick these up. */
+.Recent-Projects > h2, .highlights > h2, .about-section > h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
 
 /* about */
-.about-images {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+/* Matches the visual gap above Highlights: its 1rem top padding plus the 2.5rem section margin. */
+.about-section { margin-bottom: 3.5rem }
+
+/* Same columns and gap as the Recent Projects and Highlights card grids. */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
 }
 
-.about-images img {
-  border-radius: 15%;
-  width: 300px;
-  aspect-ratio: 1;
-  object-fit: cover;
+.about-photos {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.about-photos img {
   display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-.about-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  max-width: 70ch;
-  margin: 0 auto 1.25rem auto;
-}
+/* Both photos are portrait, so these pick the 4:3 slice that keeps every face in frame. */
+.about-photo-dad { object-position: 50% 58% }
+
+.about-photo-mom { object-position: 50% 20% }
+
+.about-text { font-size: var(--text-body); line-height: 1.6; color: var(--hero-intro) }
+
+.about-text p { margin: 0 }
+
+.about-text p + p { margin-top: 12px }
 
 /* posts */
 .post-list { padding-left: 0; list-style: none; display: grid; gap: 1rem }
@@ -379,17 +515,75 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .post-list a:hover { text-decoration: underline }
 
-.post-list p { margin: 0.35rem 0 0 0; color: var(--muted); font-size: 0.95rem }
+.post-list p { margin: 0.35rem 0 0 0; color: var(--muted); font-size: var(--text-body) }
 
 /* contact */
 .contact {
-  padding: 1.5rem;
-  background: var(--surface-alt);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  margin-top: 2.5rem; /* same as the section margin-bottom above */
+  padding: 48px;
+  background: var(--contact-bg);
+  border-radius: 12px;
 }
 
-.contact h2 { margin-top: 0 }
+.contact h2 {
+  margin: 0 0 0.75rem 0;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--contact-text);
+}
+
+.contact-intro p { margin: 0 0 1.5rem 0; font-size: 1.125rem; color: var(--contact-body) }
+
+.contact-links { list-style: none; margin: 0; padding: 0 }
+
+.contact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 56px;
+  padding-block: 0.5rem;
+  color: var(--contact-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--contact-rule);
+}
+
+.contact-label {
+  flex: none;
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--contact-label);
+}
+
+/* min-width: 0 and anywhere let a long value wrap instead of widening the page. */
+.contact-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+
+.contact-arrow { flex: none; transition: transform 0.15s ease }
+
+.contact-row:hover .contact-value,
+.contact-row:focus-visible .contact-value { color: var(--contact-hover) }
+
+.contact-row:hover .contact-arrow,
+.contact-row:focus-visible .contact-arrow { transform: translateX(4px) }
+
+/* The global focus ring uses --accent, which is too dim on this panel in light mode. */
+.contact :focus-visible { outline: 2px solid var(--contact-hover); outline-offset: 2px }
 
 /* contact dialog */
 .contact-dialog {
@@ -409,9 +603,10 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
 
 .contact-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem }
 
-.contact-dialog-header h2 { margin: 0; font-size: 1.3rem }
+.contact-dialog-header h2 { margin: 0; font-size: 1.3rem; font-weight: 600 }
 
 .dialog-close {
+  font-family: var(--font-body);
   font-size: 1.6rem;
   line-height: 1;
   color: var(--muted);
@@ -460,18 +655,23 @@ h2 { font-size: 1.6rem; margin: 0 0 1rem 0 }
   border-top: 1px solid var(--border);
   padding: 1.5rem 0;
   text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
 /* code block */
 pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; overflow: auto }
 
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace }
-
-.meta { color: var(--muted); font-size: 0.9rem }
+/* meta text. .post-list .meta is listed because .post-list p would otherwise win. */
+.meta, .post-list .meta, .brand-tag, .site-footer {
+  font-size: var(--text-meta);
+  font-weight: 500;
+  color: var(--meta);
+}
 
 /* responsive */
+@media (max-width: 899.98px) {
+  .highlights-track { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+}
+
 @media (max-width: 760px) {
   .nav-toggle { display: flex }
 
@@ -489,19 +689,50 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
   .brand-logo { height: 40px }
 
   .brand-name { font-size: 1rem }
+}
 
-  .hero { flex-direction: column-reverse; text-align: center; gap: 1.5rem; padding: 1.5rem 0 }
+@media (max-width: 720px) {
+  :root { --text-section: 1.75rem; --text-card-title: 1.25rem }
 
-  .hero-text p { margin-inline: auto }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 24px 0 48px }
 
-  .hero-actions, .visit-counter { justify-content: center }
+  /* The text comes first in the source; only the visual order puts the photo on top. */
+  .hero-image { order: -1 }
 
-  .about-images img { width: 200px }
+  .hero-image img { width: 96px; height: 96px }
 
-  .about-section p { font-size: 1rem }
+  .hero-text h1 { font-size: 2.25rem }
+
+  .hero-text p { font-size: 1.125rem }
+
+  .btn.hero-cta { width: 100% }
+
+  .contact { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 28px }
+
+  .contact .btn { display: block; text-align: center }
+
+  .Recent-Projects .projects-grid { grid-template-columns: minmax(0, 1fr) }
+
+  .Recent-Projects .card-body h3 { min-height: 0 }
+
+  .Recent-Projects .card-actions a { flex: 1 }
+
+  .about-grid { grid-template-columns: minmax(0, 1fr) }
+
+  .about-photos { grid-column: auto; gap: 12px }
+
+  /* The photos come first in the source; only the visual order puts the text on top. */
+  .about-text { order: -1 }
+
+  .highlights-track { grid-template-columns: minmax(0, 1fr); row-gap: 24px }
+
+  /* Organization and date share a line only when both fit. */
+  .highlight-meta { display: flex; flex-wrap: wrap; column-gap: 16px }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important }
   .card:hover, .post-list li:hover, .btn:hover { transform: none }
+  .contact-row:hover .contact-arrow, .contact-row:focus-visible .contact-arrow { transform: none }
+  .text-link:hover .text-link-arrow, .text-link:focus-visible .text-link-arrow { transform: none }
 }

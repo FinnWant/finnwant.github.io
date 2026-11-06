@@ -38,7 +38,6 @@
   --text-section: 2rem;
   --text-card-title: 1.375rem;
   --text-highlight-title: 1.0625rem;
-  --text-about: 1.0625rem;
   --text-body: 1rem;
   --text-meta: 0.875rem;
   --text-small: 0.8125rem;
@@ -450,30 +449,42 @@ h2 { margin: 0 0 1rem 0 }
 }
 
 /* about */
-.about-images {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+/* Matches the visual gap above Highlights: its 1rem top padding plus the 2.5rem section margin. */
+.about-section { margin-bottom: 3.5rem }
+
+/* Same columns and gap as the Recent Projects and Highlights card grids. */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
 }
 
-.about-images img {
-  border-radius: 15%;
-  width: 300px;
-  aspect-ratio: 1;
-  object-fit: cover;
+.about-photos {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.about-photos img {
   display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-.about-section p {
-  font-size: var(--text-about);
-  line-height: 1.65;
-  max-width: 65ch;
-  margin: 0 auto 1.25rem auto;
-}
+/* Both photos are portrait, so these pick the 4:3 slice that keeps every face in frame. */
+.about-photo-dad { object-position: 50% 58% }
+
+.about-photo-mom { object-position: 50% 20% }
+
+.about-text { font-size: var(--text-body); line-height: 1.6; color: var(--hero-intro) }
+
+.about-text p { margin: 0 }
+
+.about-text p + p { margin-top: 12px }
 
 /* posts */
 .post-list { padding-left: 0; list-style: none; display: grid; gap: 1rem }
@@ -666,10 +677,6 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
   .brand-logo { height: 40px }
 
   .brand-name { font-size: 1rem }
-
-  .about-images img { width: 200px }
-
-  .about-section p { font-size: 1rem }
 }
 
 @media (max-width: 720px) {
@@ -697,6 +704,13 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
   .Recent-Projects .card-body h3 { min-height: 0 }
 
   .Recent-Projects .card-actions a { flex: 1 }
+
+  .about-grid { grid-template-columns: minmax(0, 1fr) }
+
+  .about-photos { grid-column: auto; gap: 12px }
+
+  /* The photos come first in the source; only the visual order puts the text on top. */
+  .about-text { order: -1 }
 }
 
 @media (max-width: 640px) {

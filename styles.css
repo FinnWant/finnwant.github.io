@@ -6,6 +6,7 @@
   --surface-alt: #f7f8fa;
   --text: #111827;
   --muted: #5b6472;
+  --highlight-text: #4b5563;
   --border: #e5e7eb;
   --accent: #b10202;
   --accent-hover: #8e0202;
@@ -25,6 +26,7 @@
     --surface-alt: #1d222a;
     --text: #e8eaed;
     --muted: #a2acba;
+    --highlight-text: #a2acba;
     --border: #2b323b;
     /* The brand red fails contrast on a dark background, so dark mode uses a
        lightened tint and flips button text to dark. */
@@ -271,50 +273,10 @@ a { color: var(--accent) }
 /* highlights */
 .highlights { padding: 1rem 0 }
 
-.highlights-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.highlights-head h2 { margin: 0 }
-
-.highlights-pause { padding: 0.35rem 0.9rem; font-size: 0.9rem }
-
-/* Default (no JS / reduced motion): a swipeable row. */
-.highlights-viewport {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
-}
-
-.highlights-track { display: flex; width: max-content }
-
-/* Spacing is margin, not flex gap, so the cloned half is exactly 50% of the
-   track and the loop has no seam. */
-.highlights-track .highlight {
-  flex: 0 0 280px;
-  margin-right: 1.25rem;
-  scroll-snap-align: start;
-}
-
-/* Marquee (enabled by the inline script on index.html). Cards drift right to left. */
-.is-marquee .highlights-viewport {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-}
-
-.is-marquee .highlights-track { animation: highlights-scroll 55s linear infinite }
-
-.is-marquee .highlights-viewport:hover .highlights-track,
-.is-marquee.is-paused .highlights-track { animation-play-state: paused }
-
-@keyframes highlights-scroll {
-  from { transform: translateX(0) }
-  to { transform: translateX(-50%) }
+.highlights-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
 .highlight {
@@ -327,9 +289,9 @@ a { color: var(--accent) }
 
 .highlight h3 { margin: 0 0 0.35rem 0; font-size: 1.05rem }
 
-.highlight p { margin: 0; color: var(--muted); font-size: 0.95rem }
+.highlight p { margin: 0; color: var(--highlight-text); font-size: 0.95rem }
 
-.highlight .meta { display: block; margin-bottom: 0.5rem }
+.highlight .meta { display: block; margin-bottom: 0.5rem; color: var(--highlight-text) }
 
 /* sections */
 section { margin-bottom: 2.5rem }
@@ -499,6 +461,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", 
   .about-images img { width: 200px }
 
   .about-section p { font-size: 1rem }
+}
+
+@media (max-width: 640px) {
+  .highlights-track { grid-template-columns: 1fr }
 }
 
 @media (prefers-reduced-motion: reduce) {

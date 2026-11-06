@@ -516,39 +516,56 @@ h2 { margin: 0 0 1rem 0 }
 /* Matches the visual gap above Highlights: its 1rem top padding plus the 2.5rem section margin. */
 .about-section { margin-bottom: 3.5rem }
 
-/* Same columns and gap as the Recent Projects and Highlights card grids. */
 .about-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 40px;
   align-items: start;
 }
 
+.about-text p { margin: 0; max-width: 60ch }
+
+.about-text p:first-child {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.about-text p + p {
+  margin-top: 16px;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--highlight-body);
+}
+
 .about-photos {
-  grid-column: span 2;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 16px;
 }
 
 .about-photos img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
-/* Both photos are portrait, so these pick the 4:3 slice that keeps every face in frame. */
+/* Both photos are portrait, so these pick the slice that keeps every face in frame,
+   at both the 4:5 desktop crop and the 1:1 crop below 900px. */
 .about-photo-dad { object-position: 50% 58% }
 
 .about-photo-mom { object-position: 50% 20% }
 
-.about-text { font-size: var(--text-body); line-height: 1.6; color: var(--hero-intro) }
-
-.about-text p { margin: 0 }
-
-.about-text p + p { margin-top: 12px }
+.about-photos figcaption {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--highlight-body);
+}
 
 /* posts */
 .post-list { padding-left: 0; list-style: none; display: grid; gap: 1rem }
@@ -722,6 +739,12 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
 /* responsive */
 @media (max-width: 899.98px) {
   .highlights-track { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+
+  .about-grid { grid-template-columns: minmax(0, 1fr); row-gap: 24px }
+
+  .about-text p:first-child { font-size: 1.1875rem }
+
+  .about-photos img { aspect-ratio: 1 / 1 }
 }
 
 @media (max-width: 760px) {
@@ -766,13 +789,6 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
   .Recent-Projects .projects-grid { grid-template-columns: minmax(0, 1fr) }
 
   .Recent-Projects .card-actions a { flex: 1 }
-
-  .about-grid { grid-template-columns: minmax(0, 1fr) }
-
-  .about-photos { grid-column: auto; gap: 12px }
-
-  /* The photos come first in the source; only the visual order puts the text on top. */
-  .about-text { order: -1 }
 
   .highlights-track { grid-template-columns: minmax(0, 1fr); row-gap: 24px }
 

@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@700;800&amp;display=swap" />
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 
 <body>
@@ -65,7 +65,23 @@
         </div>
       </div>
       <div class="hero-image">
-        <img src="Images/HeroIMG.jpg" alt="Finnagin Wantland" />
+        <canvas class="hero-edges hero-edges-back" aria-hidden="true"></canvas>
+        <div class="hero-portrait">
+          <div class="hero-portrait-clip">
+            <img src="Images/HeroIMG.jpg" alt="Finnagin Wantland" width="900" height="900" />
+          </div>
+        </div>
+        <canvas class="hero-edges hero-edges-front" aria-hidden="true"></canvas>
+        <!-- Positioned by the script below, so it stays hidden without JS. Everything here also appears in Highlights or About Me. -->
+        <ul class="hero-graph" aria-label="Facts about me" hidden>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I'm finishing a B.S. in Computer Science at UNLV, expected May 2027.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">As a research assistant, I build simulations of signalized intersections to test adaptive signal timing.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I'm a Customer Success Intern at MoFlo, in about 9 client meetings a week.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I coached about 12 young coders a week in game development with Unity and Godot.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I labeled speakers across 600+ My First Million episodes for MFMVault.com.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I made the Dean's List in Spring 2024 and Spring 2026.</span></span></button></li>
+          <li><button class="graph-node" type="button"><span class="graph-node-body"><span class="graph-node-fact">I volunteered at the AI Engineer World's Fair in San Francisco.</span></span></button></li>
+        </ul>
       </div>
     </section>
 
@@ -283,6 +299,219 @@
   </footer>
 
   <script src="site.js"></script>
+  <script>
+    // Hero: a slowly rotating 3D graph of facts around the portrait. Nodes with z < 0 sit
+    // behind the photo and z >= 0 in front of it. Hovering, focusing or tapping a node
+    // opens its fact and pauses the rotation so it doesn't drift away from the cursor.
+    // Reduced motion gets one still frame; the facts still open.
+    (() => {
+      const hero = document.querySelector(".hero");
+      const image = document.querySelector(".hero-image");
+      const portrait = document.querySelector(".hero-portrait");
+      const graph = document.querySelector(".hero-graph");
+      if (!hero || !image || !portrait || !graph) return;
+
+      const motion = matchMedia("(prefers-reduced-motion: no-preference)").matches;
+      const mouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
+      const dark = matchMedia("(prefers-color-scheme: dark)");
+
+      const PAD = 60; // how far .hero-edges extends past .hero-image, in styles.css
+      const SPEED = 0.09; // radians per second, about 70s per revolution
+      const TILT = 0.28; // radians the graph leans towards the viewer
+      // Height of each node on the unit sphere, varied so they don't orbit in one plane.
+      const HEIGHTS = [-0.72, 0.3, -0.3, 0.74, -0.58, 0.05, 0.56];
+      // A ring keeps every node connected; the chords make it read as a graph, not a loop.
+      const EDGES = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 0], [0, 3], [1, 4], [2, 5]];
+
+      const backCtx = image.querySelector(".hero-edges-back").getContext("2d");
+      const frontCtx = image.querySelector(".hero-edges-front").getContext("2d");
+      const nodes = [...graph.querySelectorAll(".graph-node")].map((el, i, all) => ({
+        el,
+        body: el.querySelector(".graph-node-body"),
+        phi: (i / all.length) * Math.PI * 2 + 0.35,
+        height: HEIGHTS[i % HEIGHTS.length],
+        i, x: 0, y: 0, z: 0,
+      }));
+
+      let active = null;
+      let geo = null;
+      let colors = null;
+      let time = 0;
+      let speed = 1;
+
+      const measure = () => {
+        const dpr = devicePixelRatio || 1;
+        const w = image.offsetWidth + PAD * 2;
+        const h = image.offsetHeight + PAD * 2;
+        for (const ctx of [backCtx, frontCtx]) {
+          ctx.canvas.width = w * dpr;
+          ctx.canvas.height = h * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        const r = portrait.offsetWidth / 2;
+        const cx = portrait.offsetLeft + r;
+        // The orbit reaches past the photo, but never off the side of the screen.
+        const room = document.documentElement.clientWidth - image.getBoundingClientRect().left - cx - 16;
+        geo = { w, h, r, cx, cy: portrait.offsetTop + r, rx: Math.min(r * 1.28, room), ry: r * 1.12 };
+      };
+      const readColors = () => {
+        const s = getComputedStyle(document.documentElement);
+        colors = { edge: s.getPropertyValue("--muted"), hot: s.getPropertyValue("--accent") };
+      };
+
+      // Mouse position from -1 to 1 across the hero, eased; drives the ring and parallax.
+      const target = { x: 0, y: 0 };
+      const eased = { x: 0, y: 0 };
+
+      const draw = () => {
+        const yaw = eased.x * 0.35;
+        const tilt = TILT + eased.y * 0.2;
+        const bounds = active && image.getBoundingClientRect();
+
+        for (const n of nodes) {
+          const phi = n.phi + time * SPEED + Math.sin(time * 0.5 + n.i) * 0.1 + yaw;
+          const h = n.height + Math.sin(time * 0.37 + n.i * 2) * 0.05;
+          const ring = Math.sqrt(1 - h * h);
+          const x = ring * Math.sin(phi);
+          const z = ring * Math.cos(phi);
+          const y2 = h * Math.cos(tilt) - z * Math.sin(tilt);
+          n.z = h * Math.sin(tilt) + z * Math.cos(tilt);
+
+          const scale = 1 / (1 - n.z * 0.22);
+          n.x = geo.cx + geo.rx * x * scale;
+          n.y = geo.cy + geo.ry * y2 * scale;
+
+          // An open card slides along x to stay on screen and off the intro text, using its
+          // true width as it grows. Its left edge never passes the node, so the card stays
+          // under the cursor; sliding out from under it would close the card and flicker.
+          if (n === active) {
+            const half = n.body.offsetWidth / 2;
+            const left = Math.min(Math.max(12 - bounds.left, -24), n.x - 10);
+            const right = document.documentElement.clientWidth - 12 - bounds.left;
+            n.x = Math.max(left + half, Math.min(right - half, n.x));
+          }
+          const open = n === active;
+          n.el.style.transform = `translate(${n.x.toFixed(1)}px, ${n.y.toFixed(1)}px) translate(-50%, -50%) scale(${open ? 1 : scale.toFixed(3)})`;
+          n.el.style.opacity = open ? 1 : (0.72 + n.z * 0.28).toFixed(2);
+          // Portrait is 10 and the front edges 20. An open card must never be hidden behind the photo.
+          n.el.style.zIndex = open ? 30 : n.z < 0 ? 5 : 25;
+        }
+
+        backCtx.clearRect(0, 0, geo.w, geo.h);
+        frontCtx.clearRect(0, 0, geo.w, geo.h);
+        const segment = (ctx, a, b, x1, y1, x2, y2) => {
+          const hot = active && (a === active || b === active);
+          ctx.strokeStyle = hot ? colors.hot : colors.edge;
+          // Front edges can cross the face, so they stay faint even when highlighted.
+          ctx.globalAlpha = ctx === frontCtx ? (hot ? 0.5 : 0.3) : hot ? 0.9 : 0.3;
+          ctx.lineWidth = hot && ctx === backCtx ? 1.5 : 1;
+          ctx.beginPath();
+          ctx.moveTo(x1 + PAD, y1 + PAD);
+          ctx.lineTo(x2 + PAD, y2 + PAD);
+          ctx.stroke();
+        };
+        for (const [ai, bi] of EDGES) {
+          const a = nodes[ai];
+          const b = nodes[bi];
+          const layer = (n) => (n.z < 0 ? backCtx : frontCtx);
+          if (layer(a) === layer(b)) {
+            segment(layer(a), a, b, a.x, a.y, b.x, b.y);
+          } else {
+            // The edge passes through the photo's depth: split it there so one part goes behind.
+            const t = a.z / (a.z - b.z);
+            const mx = a.x + (b.x - a.x) * t;
+            const my = a.y + (b.y - a.y) * t;
+            segment(layer(a), a, b, a.x, a.y, mx, my);
+            segment(layer(b), a, b, mx, my, b.x, b.y);
+          }
+        }
+      };
+
+      const setActive = (n) => {
+        if (active === n) return;
+        active?.el.classList.remove("is-open");
+        active = n;
+        active?.el.classList.add("is-open");
+        if (!motion) draw();
+      };
+
+      let lastPointer = "mouse";
+      for (const n of nodes) {
+        n.el.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; });
+        n.el.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") setActive(n); });
+        n.el.addEventListener("pointerleave", (e) => {
+          if (e.pointerType === "mouse" && active === n && !n.el.matches(":focus-visible")) setActive(null);
+        });
+        n.el.addEventListener("focus", () => { if (n.el.matches(":focus-visible")) setActive(n); });
+        n.el.addEventListener("blur", () => { if (active === n) setActive(null); });
+        n.el.addEventListener("click", () => { if (lastPointer !== "mouse") setActive(active === n ? null : n); });
+      }
+      document.addEventListener("click", (e) => {
+        if (active && !e.target.closest(".graph-node")) setActive(null);
+      });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") setActive(null); });
+
+      if (motion && mouse) {
+        const clamp = (n) => Math.max(-1, Math.min(1, n));
+        hero.addEventListener("pointermove", (e) => {
+          const r = image.getBoundingClientRect();
+          target.x = clamp((e.clientX - (r.left + r.width / 2)) / (hero.offsetWidth / 2));
+          target.y = clamp((e.clientY - (r.top + r.height / 2)) / (hero.offsetHeight / 2));
+        });
+        hero.addEventListener("pointerleave", () => {
+          target.x = 0;
+          target.y = 0;
+        });
+      }
+
+      graph.hidden = false;
+      measure();
+      readColors();
+      new ResizeObserver(() => { measure(); if (!motion) draw(); }).observe(image);
+      dark.addEventListener("change", () => { readColors(); if (!motion) draw(); });
+
+      if (!motion) {
+        draw();
+        return;
+      }
+
+      let onScreen = true;
+      let last = null;
+      const tick = (now) => {
+        const dt = last === null ? 0 : Math.min((now - last) / 1000, 0.1);
+        last = now;
+        // Ease towards a stop while a fact is open, and back up again afterwards.
+        speed += ((active ? 0 : 1) - speed) * 0.08;
+        if (speed < 0.005) speed = 0; // otherwise it only ever approaches a stop
+        time += dt * speed;
+        // The mouse tilt holds too, or moving across an open card would shift it.
+        if (!active) {
+          eased.x += (target.x - eased.x) * 0.08;
+          eased.y += (target.y - eased.y) * 0.08;
+        }
+        if (mouse) {
+          image.style.setProperty("--px", eased.x.toFixed(3));
+          image.style.setProperty("--py", eased.y.toFixed(3));
+          if (Math.hypot(eased.x, eased.y) > 0.05) {
+            const angle = (Math.atan2(eased.x, -eased.y) * 180) / Math.PI;
+            image.style.setProperty("--ring-angle", `${angle.toFixed(1)}deg`);
+          }
+        }
+        draw();
+        if (onScreen) requestAnimationFrame(tick);
+      };
+      // Nothing to animate once the hero has scrolled away.
+      new IntersectionObserver(([e]) => {
+        const wasOff = !onScreen;
+        onScreen = e.isIntersecting;
+        if (onScreen && wasOff) {
+          last = null;
+          requestAnimationFrame(tick);
+        }
+      }).observe(hero);
+      requestAnimationFrame(tick);
+    })();
+  </script>
   <!-- Turnstile loads in explicit mode: the widget is rendered when the dialog first opens, not on page load.
        The contact Worker (worker/) verifies the token. -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>

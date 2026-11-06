@@ -170,7 +170,13 @@ def render(browser, base_url, pages):
     """Screenshot every page at every viewport and collect errors."""
     shots, errors = {}, set()
     for vp_name, (w, h) in VIEWPORTS.items():
-        page = browser.new_page(viewport={"width": w, "height": h})
+        # Reduced motion turns off the scroll fade-in, which would leave content below
+        # the fold invisible in full-page screenshots.
+        page = browser.new_page(viewport={"width": w, "height": h}, reduced_motion="reduce")
+        # Stub the visit counter: every new page is a "first visit" that would add to
+        # the real public count. A stub rather than abort, so it logs no console error.
+        page.route("https://api.counterapi.dev/**", lambda route: route.fulfill(
+            json={"data": {"up_count": 100}}, headers={"Access-Control-Allow-Origin": "*"}))
         page.on("console", lambda m: m.type == "error" and errors.add(f"console: {m.text}"))
         page.on("pageerror", lambda e: errors.add(f"pageerror: {e}"))
         page.on("response", lambda r: r.status >= 400 and r.url.startswith(base_url)

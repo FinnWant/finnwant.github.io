@@ -39,7 +39,7 @@ Every page links to **`Finnagin-Wantland-Resume.pdf` at the repo root** — nav 
 
 **Everything is themed through custom properties.** `:root` defines the tokens; a `prefers-color-scheme: dark` block overrides them. Any new rule must use `var(--…)` for color — a literal hex will look correct in light mode and break in dark. Note that dark mode **cannot** reuse the brand red `#b10202` (it fails contrast on a dark background), so it swaps in a lightened `--accent` and flips button text to a dark `--accent-on`. The brand red appears exactly twice in the codebase, both as token declarations.
 
-**`site.js` is shared by all pages** and handles the footer year (any `.js-year` element — no per-page IDs) and the mobile nav toggle. Page-specific scripts stay inline on their own page (the visit counter and contact form, both on `index.html`).
+**`site.js` is shared by all pages** and handles the footer year (any `.js-year` element — no per-page IDs), the scroll fade-in and card tilt, and the mobile nav toggle. Page-specific scripts stay inline on their own page (the hero fact graph, visit counter and contact form, all on `index.html`).
 
 **Responsive breakpoint is 760px**, defined in both `styles.css` and the `matchMedia` reset in `site.js`. Changing one requires changing the other.
 

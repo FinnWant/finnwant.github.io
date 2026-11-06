@@ -37,7 +37,7 @@
   --contact-rule: rgba(255, 255, 255, 0.15);
   /* Type. Display is only for the H1, section H2s, the Contact H2 and project card
      titles; everything else is body. Nothing goes below --text-small. */
-  --font-display: 'Bricolage Grotesque', Georgia, serif;
+  --font-display: 'Inter Tight', 'Inter', Arial, sans-serif;
   --font-body: 'Inter', Arial, sans-serif;
   --text-section: 2rem;
   --text-card-title: 1.375rem;
@@ -91,7 +91,7 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-h1 { font-family: var(--font-display); letter-spacing: -0.03em }
+h1 { font-family: var(--font-display); letter-spacing: -0.015em }
 
 img { max-width: 100% }
 
@@ -509,7 +509,7 @@ h2 { margin: 0 0 1rem 0 }
   font-size: var(--text-section);
   font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* about */

@@ -9,6 +9,7 @@
   --muted: #5b6472;
   --meta: #4b5563;
   --highlight-body: #374151;
+  --highlight-rule: #d1d5db;
   --card-title: #14181f;
   --card-text: #374151;
   --pill-neutral-bg: #f3f4f6;
@@ -53,6 +54,7 @@
     --muted: #a2acba;
     --meta: #a2acba;
     --highlight-body: #c4cbd5;
+    --highlight-rule: #4b5563;
     --card-title: #e8eaed;
     --card-text: #c4cbd5;
     --pill-neutral-bg: #2b323b;
@@ -408,31 +410,41 @@ a { color: var(--accent) }
 /* highlights */
 .highlights { padding: 1rem 0 }
 
+/* Columns and column gap match .Recent-Projects .projects-grid. */
 .highlights-track {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 24px;
+  align-items: stretch;
 }
 
 .highlight {
-  background: var(--surface-alt);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 1.1rem;
+  border-top: 1px solid var(--highlight-rule);
+  padding-top: 16px;
 }
 
 .highlight h3 {
-  margin: 0 0 0.35rem 0;
+  margin: 0 0 4px 0;
+  font-family: var(--font-body);
   font-size: var(--text-highlight-title);
   font-weight: 600;
   line-height: 1.35;
-  color: var(--text);
+  color: var(--card-title);
 }
 
-.highlight p { margin: 0; color: var(--highlight-body); font-size: var(--text-body); line-height: 1.6 }
+.highlight-meta { margin-bottom: 12px }
 
-.highlight .meta { display: block; margin-bottom: 0.5rem }
+.highlight-org, .highlight-date {
+  display: block;
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--meta);
+}
+
+.highlight-date { white-space: nowrap }
+
+.highlight p { margin: 0; color: var(--highlight-body); font-size: var(--text-body); line-height: 1.6 }
 
 /* sections */
 section { margin-bottom: 2.5rem }
@@ -657,7 +669,7 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
 
 /* responsive */
 @media (max-width: 899.98px) {
-  .highlights-track { grid-template-columns: repeat(2, 1fr) }
+  .highlights-track { grid-template-columns: repeat(2, minmax(0, 1fr)) }
 }
 
 @media (max-width: 760px) {
@@ -711,12 +723,11 @@ pre { background: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; ov
 
   /* The photos come first in the source; only the visual order puts the text on top. */
   .about-text { order: -1 }
-}
 
-@media (max-width: 640px) {
-  .highlights-track { grid-template-columns: 1fr; gap: 16px }
+  .highlights-track { grid-template-columns: minmax(0, 1fr); row-gap: 24px }
 
-  .highlight { padding: 16px }
+  /* Organization and date share a line only when both fit. */
+  .highlight-meta { display: flex; flex-wrap: wrap; column-gap: 16px }
 }
 
 @media (prefers-reduced-motion: reduce) {
